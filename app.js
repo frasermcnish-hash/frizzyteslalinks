@@ -153,14 +153,8 @@
   // ---------- Feedback ----------
   const form = $('fb');
   if (form) {
-    const err = $('fb-err'), ok = $('fb-ok'), send = $('fb-send'), email = $('fb-email');
+    const err = $('fb-err'), ok = $('fb-ok'), send = $('fb-send');
     const fields = () => ({ type: $('fb-type').value, name: $('fb-name').value.trim(), link: $('fb-link').value.trim(), msg: $('fb-msg').value.trim() });
-    const updateEmail = () => {
-      const f = fields();
-      const body = [f.msg, f.link ? 'Link: ' + f.link : '', f.name ? 'From: ' + f.name : ''].filter(Boolean).join('\n\n');
-      email.href = 'mailto:fraser.mcnish@gmail.com?subject=' + encodeURIComponent("Frizzy's Tesla Links: " + f.type) + '&body=' + encodeURIComponent(body);
-    };
-    form.addEventListener('input', updateEmail); updateEmail();
     form.addEventListener('submit', async e => {
       e.preventDefault();
       const f = fields();
@@ -171,9 +165,9 @@
         const r = await fetch('/api/feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(f) });
         const d = r.status === 201 ? {} : await r.json().catch(() => ({}));
         if (r.status !== 201) throw new Error(d.error || 'Your message could not be sent.');
-        form.reset(); updateEmail(); ok.hidden = false;
+        form.reset(); ok.hidden = false;
       } catch (ex) {
-        err.textContent = ex.message + ' You can use "Email instead".'; err.hidden = false;
+        err.textContent = ex.message + ' Please try again in a moment.'; err.hidden = false;
       } finally {
         send.disabled = false; send.textContent = 'Send';
       }
