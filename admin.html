@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Link Editor · Frizzy's Tesla Links</title>
+<meta name="theme-color" content="#17344f">
+<link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/styles.css">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}[hidden]{display:none!important}
+.wrap { padding-block-end: 110px; }
+.tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--line); margin-top: 10px; }
+.tabs button { background: none; color: var(--muted); border: 0; border-bottom: 3px solid transparent; border-radius: 0; padding: 10px 12px; font-size: 14px; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.tabs .badge { font-family: var(--font-mono); font-size: 11px; background: var(--accent); color: #fff; border-radius: 999px; padding: 1px 7px; margin-left: 4px; }
+.pinbox { display: grid; gap: 10px; max-width: 340px; margin-top: 18px; }
+.pinbox input { font: inherit; font-size: 22px; letter-spacing: .3em; text-align: center; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+.panel { display: grid; gap: 14px; margin-top: 16px; }
+.sec { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 10px; }
+.sec-head { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; }
+.sec-fields { display: grid; gap: 8px; min-width: 0; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.row3 { display: grid; grid-template-columns: 80px 1fr 1fr; gap: 8px; }
+@media (max-width: 480px) { .row2, .row3 { grid-template-columns: 1fr; } }
+.f { display: grid; gap: 3px; min-width: 0; }
+.f label { font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.f input, .f select, .f textarea { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 7px; padding: 8px 10px; }
+.f input:focus, .f select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+.sec-title input { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; text-transform: uppercase; letter-spacing: .03em; }
+.tools { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+.ib { background: var(--chip); color: var(--ink); border: 0; border-radius: 7px; padding: 7px 10px; font-size: 13px; min-width: 36px; }
+.ib.danger { color: var(--accent); }
+.ib:disabled { opacity: .35; cursor: default; }
+.links-ed { display: grid; gap: 8px; }
+.lk { border: 1px solid var(--line); border-radius: 10px; padding: 10px; display: grid; gap: 8px; background: var(--bg); }
+.lk.open { background: var(--surface); }
+.lk-sum { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
+.lk-sum button.name { text-align: left; background: none; color: var(--ink); padding: 2px 0; font-size: 14px; display: grid; gap: 1px; min-width: 0; }
+.lk-sum .name strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lk-sum .name span { font-weight: 400; font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.add { justify-self: start; background: transparent; color: var(--accent); border: 1px dashed var(--accent); }
+.savebar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--line); padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); display: flex; gap: 10px; align-items: center; justify-content: center; z-index: 10; }
+.savebar .msg { font-size: 13px; color: var(--muted); max-width: 360px; }
+.savebar .msg.bad { color: var(--accent); font-weight: 600; }
+.fbi { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; gap: 6px; }
+.fbi .meta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); display: flex; gap: 10px; flex-wrap: wrap; }
+.fbi .type { color: var(--harbour); font-weight: 600; font-size: 13px; }
+.fbi p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; }
+.fbi a { color: var(--accent); overflow-wrap: anywhere; font-size: 14px; }
+.fbi .ib { justify-self: start; }
+.note { color: var(--muted); font-size: 13.5px; margin: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="/">← Back to the links page</a>
+    <div class="eyebrow">Admin</div>
+    <h1>Link Editor</h1>
+  </header>
+
+  <form class="pinbox" id="pinform">
+    <label for="pin" class="note">Enter your PIN to edit links and read feedback.</label>
+    <input id="pin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="12">
+    <button type="submit">Unlock</button>
+    <p class="err" id="pinerr" hidden></p>
+  </form>
+
+  <div id="app" hidden>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" aria-selected="true" data-tab="links">Links</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="feedback">Feedback <span class="badge" id="fbcount" hidden></span></button>
+    </div>
+
+    <section class="panel" id="tab-links">
+      <p class="note">Tap a link to edit it. Use the arrows to reorder. Changes go live when you press <strong>Save changes</strong>.</p>
+      <div id="sections"></div>
+      <button type="button" class="ib add" id="addsec">+ Add a section</button>
+    </section>
+
+    <section class="panel" id="tab-feedback" hidden>
+      <div id="fblist"></div>
+    </section>
+  </div>
+</div>
+
+<div class="savebar" id="savebar" hidden>
+  <span class="msg" id="savemsg">No unsaved changes.</span>
+  <button type="button" id="save" disabled>Save changes</button>
+</div>
+
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  let PIN = '';
+  try { PIN = sessionStorage.getItem('ftl-pin') || ''; } catch (e) {}
+  let data = null, saved = '', openLinks = new Set();
+
+  const api = (path, opts = {}) => fetch(path, Object.assign({}, opts, {
+    headers: Object.assign({ 'Content-Type': 'application/json', 'x-admin-pin': PIN }, opts.headers || {}),
+  }));
+
+  // ---------- Unlock ----------
+  async function unlock() {
+    const r = await api('/api/feedback');
+    if (!r.ok) {
+      const d = await r.json().catch(() => ({}));
+      throw new Error(d.error || 'Could not unlock.');
+    }
+    try { sessionStorage.setItem('ftl-pin', PIN); } catch (e) {}
+    $('pinform').hidden = true; $('app').hidden = false; $('savebar').hidden = false;
+    renderFeedback((await r.json()).items);
+    const lr = await fetch('/api/links', { cache: 'no-store' });
+    data = await lr.json();
+    saved = JSON.stringify(data.sections);
+    renderLinks();
+  }
+  $('pinform').addEventListener('submit', async e => {
+    e.preventDefault();
+    PIN = $('pin').value.trim();
+    $('pinerr').hidden = true;
+    try { await unlock(); } catch (ex) { $('pinerr').textContent = ex.message; $('pinerr').hidden = false; }
+  });
+  if (PIN) unlock().catch(() => { PIN = ''; try { sessionStorage.removeItem('ftl-pin'); } catch (e) {} });
+
+  // ---------- Tabs ----------
+  document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-tab]').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+    $('tab-links').hidden = b.dataset.tab !== 'links';
+    $('tab-feedback').hidden = b.dataset.tab !== 'feedback';
+    $('savebar').hidden = b.dataset.tab !== 'links';
+  }));
+
+  // ---------- Links editor ----------
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const field = (label, key, val, attrs = '') =>
+    '<div class="f"><label>' + label + '</label><input data-k="' + key + '" value="' + esc(val) + '" ' + attrs + '></div>';
+
+  function renderLinks() {
+    const box = $('sections');
+    box.innerHTML = data.sections.map((s, si) => {
+      const n = data.sections.length;
+      const links = s.links.map((l, li) => {
+        const key = si + ':' + li, open = openLinks.has(l._k || (l._k = Math.random().toString(36).slice(2)));
+        const m = s.links.length;
+        return '<div class="lk' + (open ? ' open' : '') + '" data-si="' + si + '" data-li="' + li + '">' +
+          '<div class="lk-sum"><button type="button" class="name" data-act="toggle"><strong>' + esc(l.title || 'New link') + '</strong><span>' + esc(l.url || 'No web address yet') + '</span></button>' +
+          '<div class="tools"><button type="button" class="ib" data-act="lup" ' + (li === 0 ? 'disabled' : '') + ' aria-label="Move up">↑</button>' +
+          '<button type="button" class="ib" data-act="ldown" ' + (li === m - 1 ? 'disabled' : '') + ' aria-label="Move down">↓</button></div></div>' +
+          (open ? '<div class="row2">' + field('Name', 'title', l.title, 'maxlength="100"') + field('Web address', 'url', l.url, 'type="url" inputmode="url" placeholder="https://" maxlength="600"') + '</div>' +
+            field('Description', 'desc', l.desc, 'maxlength="200"') +
+            (s.layout === 'rows'
+              ? '<div class="row3">' + field('Code', 'code', l.code, 'maxlength="6"') + field('Site label', 'host', l.host, 'maxlength="24"') + field('Tag (optional)', 'tag', l.tag, 'maxlength="24"') + '</div>'
+              : '<div class="row2">' + field('Tag (optional)', 'tag', l.tag, 'maxlength="24" placeholder="e.g. Sound on"') + '<div></div></div>') +
+            '<div class="tools" style="justify-content:space-between">' +
+            '<select class="ib" data-act="move" aria-label="Move to section"><option value="">Move to…</option>' +
+            data.sections.map((t, ti) => ti === si ? '' : '<option value="' + ti + '">' + esc(t.title) + '</option>').join('') + '</select>' +
+            '<button type="button" class="ib danger" data-act="ldel">Delete link</button></div>' : '') +
+          '</div>';
+      }).join('');
+      return '<div class="sec" data-si="' + si + '">' +
+        '<div class="sec-head"><div class="sec-fields">' +
+        '<div class="f sec-title"><label>Section title</label><input data-sk="title" value="' + esc(s.title) + '" maxlength="80"></div>' +
+        '<div class="row2"><div class="f"><label>Short description</label><input data-sk="blurb" value="' + esc(s.blurb) + '" maxlength="200"></div>' +
+        '<div class="f"><label>Style</label><select data-sk="layout"><option value="rows"' + (s.layout === 'rows' ? ' selected' : '') + '>List rows with codes</option><option value="cards"' + (s.layout === 'cards' ? ' selected' : '') + '>Small cards</option></select></div></div>' +
+        '</div><div class="tools"><button type="button" class="ib" data-act="sup" ' + (si === 0 ? 'disabled' : '') + ' aria-label="Move section up">↑</button>' +
+        '<button type="button" class="ib" data-act="sdown" ' + (si === n - 1 ? 'disabled' : '') + ' aria-label="Move section down">↓</button>' +
+        '<button type="button" class="ib danger" data-act="sdel" aria-label="Delete section">✕</button></div></div>' +
+        '<div class="links-ed">' + links + '</div>' +
+        '<button type="button" class="ib add" data-act="ladd">+ Add a link to ' + esc(s.title || 'this section') + '</button></div>';
+    }).join('');
+    dirty();
+  }
+
+  function clean() { return data.sections.map(s => Object.assign({}, s, { links: s.links.map(l => { const c = Object.assign({}, l); delete c._k; return c; }) })); }
+  function dirty() {
+    const changed = JSON.stringify(clean()) !== saved;
+    $('save').disabled = !changed;
+    const m = $('savemsg'); m.classList.remove('bad');
+    m.textContent = changed ? 'You have unsaved changes.' : 'No unsaved changes.';
+  }
+  const swap = (arr, i, j) => { const t = arr[i]; arr[i] = arr[j]; arr[j] = t; };
+
+  $('sections').addEventListener('input', e => {
+    const t = e.target;
+    const secEl = t.closest('.sec'); if (!secEl) return;
+    const s = data.sections[+secEl.dataset.si];
+    if (t.dataset.sk) { s[t.dataset.sk] = t.value; if (t.dataset.sk === 'layout') renderLinks(); else dirty(); return; }
+    const lk = t.closest('.lk');
+    if (lk && t.dataset.k) {
+      const l = s.links[+lk.dataset.li];
+      l[t.dataset.k] = t.value;
+      if (t.dataset.k === 'title' || t.dataset.k === 'url') {
+        const sum = lk.querySelector('.name');
+        sum.querySelector('strong').textContent = l.title || 'New link';
+        sum.querySelector('span').textContent = l.url || 'No web address yet';
+      }
+      dirty();
+    }
+  });
+  $('sections').addEventListener('change', e => {
+    const t = e.target;
+    if (t.dataset.act !== 'move' || t.value === '') return;
+    const lk = t.closest('.lk'); const si = +lk.dataset.si, li = +lk.dataset.li;
+    const [l] = data.sections[si].links.splice(li, 1);
+    data.sections[+t.value].links.push(l);
+    renderLinks();
+  });
+  $('sections').addEventListener('click', e => {
+    const b = e.target.closest('button[data-act]'); if (!b) return;
+    const secEl = b.closest('.sec'); const si = +secEl.dataset.si; const s = data.sections[si];
+    const lk = b.closest('.lk'); const li = lk ? +lk.dataset.li : -1;
+    switch (b.dataset.act) {
+      case 'toggle': { const k = s.links[li]._k; openLinks.has(k) ? openLinks.delete(k) : openLinks.add(k); break; }
+      case 'lup': swap(s.links, li, li - 1); break;
+      case 'ldown': swap(s.links, li, li + 1); break;
+      case 'ldel':
+        if (b.dataset.confirm !== '1') { b.dataset.confirm = '1'; b.textContent = 'Tap again to delete'; return; }
+        s.links.splice(li, 1); break;
+      case 'ladd': { const l = { title: '', desc: '', url: '', _k: Math.random().toString(36).slice(2) }; if (s.layout === 'rows') { l.code = ''; l.host = ''; } s.links.push(l); openLinks.add(l._k); break; }
+      case 'sup': swap(data.sections, si, si - 1); break;
+      case 'sdown': swap(data.sections, si, si + 1); break;
+      case 'sdel':
+        if (b.dataset.confirm !== '1') { b.dataset.confirm = '1'; b.textContent = 'Delete ' + s.links.length + ' links?'; return; }
+        data.sections.splice(si, 1); break;
+    }
+    renderLinks();
+  });
+  $('addsec').addEventListener('click', () => {
+    data.sections.push({ id: '', title: 'New section', blurb: '', layout: 'rows', links: [] });
+    renderLinks();
+    const secs = document.querySelectorAll('.sec'); secs[secs.length - 1].scrollIntoView({ behavior: 'smooth' });
+  });
+
+  $('save').addEventListener('click', async () => {
+    const btn = $('save'), m = $('savemsg');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+      const r = await api('/api/links', { method: 'PUT', body: JSON.stringify({ sections: clean() }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'Could not save.');
+      data = d; saved = JSON.stringify(d.sections); openLinks = new Set();
+      renderLinks();
+      m.textContent = 'Saved. Visitors see the changes within a minute.';
+    } catch (ex) {
+      m.textContent = ex.message; m.classList.add('bad'); btn.disabled = false;
+    } finally { btn.textContent = 'Save changes'; }
+  });
+  window.addEventListener('beforeunload', e => { if (data && JSON.stringify(clean()) !== saved) { e.preventDefault(); e.returnValue = ''; } });
+
+  // ---------- Feedback ----------
+  function renderFeedback(items) {
+    const c = $('fbcount'); c.textContent = items.length; c.hidden = !items.length;
+    const box = $('fblist');
+    if (!items.length) { box.innerHTML = '<p class="note">No feedback yet. Messages sent from the form on the links page appear here.</p>'; return; }
+    box.innerHTML = items.map((it, i) => {
+      const when = new Date(it.ts).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      const safeLink = /^https?:\/\//i.test(it.link || '') ? '<a href="' + esc(it.link) + '" target="_blank" rel="noopener nofollow">' + esc(it.link) + '</a>' : (it.link ? '<p>' + esc(it.link) + '</p>' : '');
+      return '<div class="fbi" data-i="' + i + '"><div class="type">' + esc(it.type || 'Feedback') + '</div>' +
+        '<div class="meta"><span>' + when + '</span>' + (it.name ? '<span>From ' + esc(it.name) + '</span>' : '') + '</div>' +
+        (it.msg ? '<p>' + esc(it.msg) + '</p>' : '') + safeLink +
+        '<button type="button" class="ib danger" data-del="' + i + '">Delete</button></div>';
+    }).join('');
+    box.onclick = async e => {
+      const b = e.target.closest('[data-del]'); if (!b) return;
+      if (b.dataset.confirm !== '1') { b.dataset.confirm = '1'; b.textContent = 'Tap again to delete'; return; }
+      const it = items[+b.dataset.del];
+      const r = await api('/api/feedback', { method: 'DELETE', body: JSON.stringify({ raw: it.raw }) });
+      if (r.ok) { items.splice(+b.dataset.del, 1); renderFeedback(items); }
+    };
+  }
+})();
+</script>
+</body>
+</html>

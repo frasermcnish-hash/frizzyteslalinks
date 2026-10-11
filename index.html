@@ -20,6 +20,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="/styles.css">
+<link rel="preload" href="/api/links" as="fetch" crossorigin>
 </head>
 <body>
 <div class="wrap">
@@ -38,86 +39,24 @@
   <div class="toolbar">
     <label for="q" class="eyebrow" style="color:var(--muted)">Find a link</label>
     <input id="q" class="search" type="search" placeholder="Try “ship”, “VIN” or “WhatsApp”" autocomplete="off">
-    <nav class="chips" aria-label="Sections">
+    <nav class="chips" id="chips" aria-label="Sections">
       <a href="/guide" class="chip-guide">New here? Guide</a>
-      <a href="#track">Track your car</a>
-      <a href="#ships">Ships</a>
-      <a href="#webcams">Webcams</a>
-      <a href="#chats">Chats</a>
-      <a href="#resources">Resources</a>
-      <a href="#extras">Extras</a>
-      <a href="#passtime">Pass the time</a>
-      <a href="#legends">Legends</a>
-      <a href="#feedback">Suggest a link</a>
+      <a href="#legends" data-static>Legends</a>
+      <a href="#feedback" data-static>Suggest a link</a>
     </nav>
   </div>
 
-  <main id="list">
-    <section id="track">
-      <h2>Track your car <span class="count"></span></h2>
-      <p>Estimate your delivery date and follow your VIN.</p>
-      <ul class="links">
-        <li><a data-id="tedd-2bc4a-web-app" href="https://tedd-2bc4a.web.app/" target="_blank" rel="noopener"><span class="code">TEDD</span><span class="txt"><strong>Estimated Delivery Date tool</strong><span>Work out when your car is likely to land</span></span><span class="host"><span class="host-name">tedd </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="docs-google-com-spreadsheets-d-1ocz2woepo9umorilbixg6ustigkh08t6" href="https://docs.google.com/spreadsheets/d/1ocZ2wOEpo9umORILBIxG6UStigKh08t6gT3CyAiwlW0/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="code">SHEET</span><span class="txt"><strong>Tracking spreadsheet</strong><span>Community order and delivery tracker</span></span><span class="host"><span class="host-name">google sheets </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="logisoft-io-track-shipment-by-vin" href="https://www.logisoft.io/track-shipment-by-vin" target="_blank" rel="noopener"><span class="code">VIN</span><span class="txt"><strong>Track VIN – shipping</strong><span>Look up your shipment by VIN</span></span><span class="host"><span class="host-name">logisoft </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="parts-tesla-com" href="https://parts.tesla.com" target="_blank" rel="noopener"><span class="code">PARTS</span><span class="txt"><strong>Tesla parts check</strong><span>Tesla's official parts catalogue</span></span><span class="host"><span class="host-name">tesla </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-      </ul>
-    </section>
+  <section class="popular" id="popular" hidden>
+    <h2 class="sub">Most used this week</h2>
+    <ol class="pop-list" id="pop-list"></ol>
+  </section>
 
-    <section id="ships">
-      <h2>Ships &amp; shipping <span class="count"></span></h2>
-      <p>Follow the car carriers from port to Southampton.</p>
-      <ul class="links">
-        <li><a data-id="teslamotorsclub-com-tmc-threads-2025-shipping-movements-319517-l" href="https://teslamotorsclub.com/tmc/threads/2025-shipping-movements.319517/latest" target="_blank" rel="noopener"><span class="code">TMC</span><span class="txt"><strong>Shipping movements thread</strong><span>The main TMC thread, opens at the latest post</span></span><span class="host"><span class="host-name">tmc </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="teslamotorsclub-com-tmc-search-member" href="https://teslamotorsclub.com/tmc/search/member?user_id=268404" target="_blank" rel="noopener"><span class="code">TMC</span><span class="txt"><strong>@Temboa – latest posts</strong><span>Ship updates from the thread's tracker</span></span><span class="host"><span class="host-name">tmc </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="teslamotorsclub-com-tmc-posts-9041308" href="https://teslamotorsclub.com/tmc/posts/9041308/" target="_blank" rel="noopener"><span class="code">TMC</span><span class="txt"><strong>@Temboa's bot/script help post</strong><span>How the tracking bot works</span></span><span class="host"><span class="host-name">tmc </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="tesla-propl-eu" href="https://tesla.propl.eu/" target="_blank" rel="noopener"><span class="code">SHIP</span><span class="txt"><strong>Tesla Ships – track</strong><span>Live positions of Tesla car carriers</span></span><span class="host"><span class="host-name">propl.eu </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="vesselfinder-com" href="https://www.vesselfinder.com/" target="_blank" rel="noopener"><span class="code">AIS</span><span class="txt"><strong>Vessel Finder</strong><span>Search any vessel by name</span></span><span class="host"><span class="host-name">vesselfinder </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-      </ul>
-    </section>
+  <main id="list" aria-live="polite">
+    <p class="loading" id="loading">Loading links…</p>
+  </main>
+  <p class="empty" id="empty">No links match that. Try a shorter word.</p>
 
-    <section id="webcams">
-      <h2>Southampton webcams <span class="count"></span></h2>
-      <p>Watch the UK Tesla ships sail into Southampton.</p>
-      <ul class="links">
-        <li><a data-id="youtube-com-live-cmsvx-eju5a" href="https://www.youtube.com/live/CmsVx-EJU5A" target="_blank" rel="noopener"><span class="code">IOW</span><span class="txt"><strong>Isle of Wight</strong><span>Ships coming into the Solent · live</span></span><span class="host"><span class="host-name">youtube </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="youtube-com-live-qo-ho-kwwmy" href="https://www.youtube.com/live/QO-hO_kwwmY" target="_blank" rel="noopener"><span class="code">DOCK</span><span class="txt"><strong>Southampton Dock</strong><span>Ships arriving at the port · live</span></span><span class="host"><span class="host-name">youtube </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="youtube-com-live-ec6xgmuw1dw" href="https://www.youtube.com/live/ec6xgmuW1dw" target="_blank" rel="noopener"><span class="code">BOX</span><span class="txt"><strong>West Quays (BOX Cam)</strong><span>Live view from West Quay · live</span></span><span class="host"><span class="host-name">youtube </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-      </ul>
-    </section>
-
-    <section id="chats">
-      <h2>Community chats <span class="count"></span></h2>
-      <p>Wait it out with people in the same boat.</p>
-      <ul class="links">
-        <li><a data-id="chat-whatsapp-com-hh6wgiom270feem7byg5kl" href="https://chat.whatsapp.com/Hh6wGIOM270FeEM7byg5KL?s=cl&amp;p=i&amp;ilr=4" target="_blank" rel="noopener"><span class="code">Q3</span><span class="txt"><strong>Q3 delivery chat</strong><span>WhatsApp group</span></span><span class="host"><span class="host-name">whatsapp </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="chat-whatsapp-com-lytuvljofep5aaaamajhtb" href="https://chat.whatsapp.com/LyTuvlJofEP5AaaAMaJhTB?s=cl&amp;p=i&amp;ilr=2" target="_blank" rel="noopener"><span class="code">Q4</span><span class="txt"><strong>Q4 delivery chat</strong><span>WhatsApp group</span></span><span class="host"><span class="host-name">whatsapp </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="chat-whatsapp-com-kth34x4ljxh5ciw8xckkoq" href="https://chat.whatsapp.com/KtH34x4LjXh5ciW8xcKKoq?mode=gi_t" target="_blank" rel="noopener"><span class="code">OWN</span><span class="txt"><strong>Tesla Owners chat</strong><span>For when the car's arrived · 131 members</span></span><span class="host"><span class="host-name">whatsapp </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-      </ul>
-    </section>
-
-    <section id="resources">
-      <h2>Resources <span class="count"></span></h2>
-      <p>Reading, stats and apps for the long wait.</p>
-      <ul class="links">
-        <li><a data-id="notateslaapp-com" href="https://www.notateslaapp.com/" target="_blank" rel="noopener"><span class="code">NTA</span><span class="txt"><strong>Not a Tesla App</strong><span>News, software updates and guides</span></span><span class="host"><span class="host-name">notateslaapp </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="smmt-co-uk-vehicle-data-car-registrations" href="https://www.smmt.co.uk/vehicle-data/car-registrations/" target="_blank" rel="noopener"><span class="code">SMMT</span><span class="txt"><strong>UK car registrations</strong><span>Monthly registration statistics</span></span><span class="host"><span class="host-name">smmt </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-        <li><a data-id="apps-apple-com-app-id1056496235" href="https://apps.apple.com/app/id1056496235" target="_blank" rel="noopener"><span class="code">iOS</span><span class="txt"><strong>Supercharger Construction</strong><span>iPhone app tracking new Supercharger sites</span></span><span class="host"><span class="host-name">app store </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-      </ul>
-    </section>
-
-    <section id="extras">
-      <h2>Extras <span class="count"></span></h2>
-      <p>Getting ready for home charging.</p>
-      <ul class="links">
-        <li><a data-id="share-octopus-energy-great-thyme-51" href="https://share.octopus.energy/great-thyme-51" target="_blank" rel="noopener"><span class="code">£100</span><span class="txt"><strong>Octopus Energy referral</strong><span>Want to share £100? Use this link when you switch</span></span><span class="host"><span class="host-name">octopus </span><span class="hits" aria-label="clicks"></span><span class="arrow">↗</span></span></a></li>
-      </ul>
-    </section>
-
-    <section id="passtime">
-      <h2>Ways to pass the time <span class="count"></span></h2>
-      <p>Things to do while you wait.</p>
-
+  <template id="extra-passtime">
       <h3 class="sub">The official Wait Club routine</h3>
       <ul class="routine">
         <li><span class="tick" aria-hidden="true"></span><span>Check the status in your Tesla app every few minutes of every day</span></li>
@@ -128,38 +67,7 @@
       </ul>
 
       <h3 class="sub">Distractions from the internet</h3>
-      <ul class="fun">
-        <li><a data-id="abetterrouteplanner-com" href="https://abetterrouteplanner.com/" target="_blank" rel="noopener"><strong>A Better Routeplanner</strong><span>Plan imaginary road trips in your future Tesla</span><em class="tag ev">EV</em><span class="hits"></span></a></li>
-        <li><a data-id="neal-fun" href="https://neal.fun/" target="_blank" rel="noopener"><strong>Neal.fun</strong><span>Quirky web experiments, including Spend Bill Gates' Money and The Auction Game</span><span class="hits"></span></a></li>
-        <li><a data-id="neal-fun-password-game" href="https://neal.fun/password-game/" target="_blank" rel="noopener"><strong>The Password Game</strong><span>Make a password that meets increasingly absurd rules</span><span class="hits"></span></a></li>
-        <li><a data-id="neal-fun-earth-reviews" href="https://neal.fun/earth-reviews/" target="_blank" rel="noopener"><strong>Earth Reviews</strong><span>Rate parts of Earth, from the Moon to bees and rain</span><span class="hits"></span></a></li>
-        <li><a data-id="geoguessr-com" href="https://www.geoguessr.com/" target="_blank" rel="noopener"><strong>GeoGuessr</strong><span>Guess where you are from Street View alone</span><span class="hits"></span></a></li>
-        <li><a data-id="mapcrunch-com" href="https://www.mapcrunch.com/" target="_blank" rel="noopener"><strong>MapCrunch</strong><span>A random button for Google Street View</span><span class="hits"></span></a></li>
-        <li><a data-id="radio-garden" href="https://radio.garden/" target="_blank" rel="noopener"><strong>Radio Garden</strong><span>Spin the globe and listen to live radio from any city</span><span class="hits"></span></a></li>
-        <li><a data-id="window-swap-com" href="https://www.window-swap.com/" target="_blank" rel="noopener"><strong>WindowSwap</strong><span>The view from a stranger's window somewhere on Earth</span><span class="hits"></span></a></li>
-        <li><a data-id="stars-chromeexperiments-com" href="https://stars.chromeexperiments.com/" target="_blank" rel="noopener"><strong>100,000 Stars</strong><span>An interactive tour of our stellar neighbourhood</span><span class="hits"></span></a></li>
-        <li><a data-id="htwins-net-scale2" href="https://htwins.net/scale2/" target="_blank" rel="noopener"><strong>The Scale of the Universe 2</strong><span>Zoom from a quantum string to the edge of the universe</span><span class="hits"></span></a></li>
-        <li><a data-id="zoomquilt-org" href="https://zoomquilt.org/" target="_blank" rel="noopener"><strong>Zoom Quilt</strong><span>An endless, hypnotic artistic zoom</span><span class="hits"></span></a></li>
-        <li><a data-id="asoftmurmur-com" href="https://asoftmurmur.com/" target="_blank" rel="noopener"><strong>A Soft Murmur</strong><span>Mix your own rain, thunder, birdsong and café sounds</span><em class="tag">Sound on</em><span class="hits"></span></a></li>
-        <li><a data-id="incredibox-com" href="https://www.incredibox.com/" target="_blank" rel="noopener"><strong>Incredibox</strong><span>Drag icons onto beatboxers to make your own songs</span><em class="tag">Sound on</em><span class="hits"></span></a></li>
-        <li><a data-id="quickdraw-withgoogle-com" href="https://quickdraw.withgoogle.com/" target="_blank" rel="noopener"><strong>Quick, Draw!</strong><span>Draw something and an AI tries to guess it in under 20 seconds</span><span class="hits"></span></a></li>
-        <li><a data-id="skribbl-io" href="https://skribbl.io/" target="_blank" rel="noopener"><strong>Skribbl.io</strong><span>Online drawing and guessing with friends or strangers</span><span class="hits"></span></a></li>
-        <li><a data-id="play2048-co" href="https://play2048.co/" target="_blank" rel="noopener"><strong>2048</strong><span>Combine numbered tiles to reach the 2048 block</span><span class="hits"></span></a></li>
-        <li><a data-id="jurassicsystems-com" href="https://jurassicsystems.com/" target="_blank" rel="noopener"><strong>Jurassic Systems</strong><span>Play the technician hacking Jurassic Park's 90s computer system</span><span class="hits"></span></a></li>
-        <li><a data-id="hackertyper-net" href="https://hackertyper.net/" target="_blank" rel="noopener"><strong>Hacker Typer</strong><span>Type anything and the screen fills with convincing "hacker" code</span><em class="tag">Best on a computer</em><span class="hits"></span></a></li>
-        <li><a data-id="findtheinvisiblecow-com" href="https://findtheinvisiblecow.com/" target="_blank" rel="noopener"><strong>Find the Invisible Cow</strong><span>Hunt for a hidden cow by following the sound it makes</span><em class="tag">Sound on</em><span class="hits"></span></a></li>
-        <li><a data-id="pointerpointer-com" href="https://pointerpointer.com/" target="_blank" rel="noopener"><strong>Pointer Pointer</strong><span>Finds a photo of someone pointing exactly at your cursor</span><em class="tag">Best on a computer</em><span class="hits"></span></a></li>
-        <li><a data-id="wikiroulette-co" href="https://wikiroulette.co/" target="_blank" rel="noopener"><strong>Wiki Roulette</strong><span>Land on a random Wikipedia page</span><span class="hits"></span></a></li>
-        <li><a data-id="en-wikipedia-org-wiki-wikipedia-unusual-articles" href="https://en.wikipedia.org/wiki/Wikipedia:Unusual_articles" target="_blank" rel="noopener"><strong>Wikipedia's unusual articles</strong><span>The weirdest corners of human knowledge</span><span class="hits"></span></a></li>
-        <li><a data-id="theuselessweb-com" href="https://theuselessweb.com/" target="_blank" rel="noopener"><strong>The Useless Web</strong><span>A random trip to the strangest corners of the internet</span><span class="hits"></span></a></li>
-        <li><a data-id="boredbutton-com" href="https://www.boredbutton.com/" target="_blank" rel="noopener"><strong>The Bored Button</strong><span>Can't decide? Press the button and go somewhere random</span><span class="hits"></span></a></li>
-        <li><a data-id="screamintothevoid-com" href="https://screamintothevoid.com/" target="_blank" rel="noopener"><strong>Scream Into the Void</strong><span>Type out your delivery frustrations and watch them vanish</span><span class="hits"></span></a></li>
-        <li><a data-id="papertoilet-com" href="https://papertoilet.com/" target="_blank" rel="noopener"><strong>Paper Toilet</strong><span>Unroll a digital toilet roll as fast as you can</span><span class="hits"></span></a></li>
-      </ul>
-    </section>
-
-    <p class="empty" id="empty">No links match that. Try a shorter word.</p>
-  </main>
+  </template>
 
   <section class="guide" id="legends">
     <div class="eyebrow">Ship gurus</div>
@@ -198,7 +106,7 @@
 
   <div class="contact" id="feedback">
     <h2>Suggest a link or send feedback</h2>
-    <p>Fill this in and tap the button. Your email app opens with the message ready to send.</p>
+    <p>Found something useful for the wait, or spotted a broken link? Send it here.</p>
     <form id="fb" class="fb" novalidate>
       <div class="field">
         <label for="fb-type">What's it about?</label>
@@ -211,94 +119,29 @@
       </div>
       <div class="field">
         <label for="fb-name">Your name or TMC username <span class="opt">optional</span></label>
-        <input id="fb-name" type="text" autocomplete="name">
+        <input id="fb-name" type="text" autocomplete="name" maxlength="80">
       </div>
-      <div class="field" id="fb-link-wrap">
+      <div class="field">
         <label for="fb-link">Link <span class="opt">optional</span></label>
-        <input id="fb-link" type="url" inputmode="url" placeholder="https://">
+        <input id="fb-link" type="url" inputmode="url" placeholder="https://" maxlength="600">
       </div>
       <div class="field">
         <label for="fb-msg">Message</label>
-        <textarea id="fb-msg" rows="4" placeholder="What is it, and why is it useful?"></textarea>
+        <textarea id="fb-msg" rows="4" maxlength="2000" placeholder="What is it, and why is it useful?"></textarea>
       </div>
-      <p class="err" id="fb-err" hidden>Add a message or a link before sending.</p>
+      <p class="err" id="fb-err" hidden></p>
       <div class="actions">
-        <button type="submit">Open in my email app</button>
-        <button type="button" class="ghost" id="fb-copy">Copy message</button>
+        <button type="submit" id="fb-send">Send</button>
+        <a class="btn-ghost" id="fb-email" href="mailto:fraser.mcnish@gmail.com">Email instead</a>
       </div>
-      <p class="hint" id="fb-status">If no email app opens, tap <strong>Copy message</strong> and paste it into an email to <span class="mail" id="mail">fraser.mcnish@gmail.com</span>.</p>
+      <p class="ok" id="fb-ok" hidden>Thanks, your message has been sent.</p>
     </form>
   </div>
 
   <footer>Unofficial community page. Not affiliated with Tesla.</footer>
 </div>
-
-<script>
-(function () {
-  const q = document.getElementById('q');
-  const sections = [...document.querySelectorAll('#list section')];
-  const empty = document.getElementById('empty');
-  function update() {
-    const term = q.value.trim().toLowerCase();
-    let total = 0;
-    sections.forEach(s => {
-      const items = [...s.querySelectorAll('li')];
-      let shown = 0;
-      items.forEach(li => {
-        const a = li.querySelector('a');
-        const match = !term || li.textContent.toLowerCase().includes(term) || (a && a.href.toLowerCase().includes(term));
-        li.hidden = !match; if (match) shown++;
-      });
-      s.hidden = shown === 0;
-      s.querySelector('.count').textContent = shown + (shown === 1 ? ' link' : ' links');
-      total += shown;
-    });
-    empty.style.display = total ? 'none' : 'block';
-  }
-  q.addEventListener('input', update);
-  update();
-
-  const TO = 'fraser.mcnish@gmail.com';
-  const $ = id => document.getElementById(id);
-  const form = $('fb'), err = $('fb-err'), status = $('fb-status'), copyBtn = $('fb-copy');
-
-  function compose() {
-    const type = $('fb-type').value;
-    const name = $('fb-name').value.trim();
-    const link = $('fb-link').value.trim();
-    const msg = $('fb-msg').value.trim();
-    const subject = "Frizzy's Tesla Links: " + type;
-    const lines = [];
-    if (msg) lines.push(msg, '');
-    if (link) lines.push('Link: ' + link);
-    if (name) lines.push('From: ' + name);
-    return { subject, body: lines.join('\n').trim(), empty: !msg && !link };
-  }
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const m = compose();
-    err.hidden = !m.empty;
-    if (m.empty) { $('fb-msg').focus(); return; }
-    const href = 'mailto:' + TO + '?subject=' + encodeURIComponent(m.subject) + '&body=' + encodeURIComponent(m.body);
-    const a = document.createElement('a');
-    a.href = href; a.target = '_top'; a.rel = 'noopener';
-    document.body.appendChild(a); a.click(); a.remove();
-    status.innerHTML = 'Your email app should open with the message filled in. Nothing opened? Tap <strong>Copy message</strong> and paste it into an email to <span class="mail">' + TO + '</span>.';
-  });
-
-  copyBtn.addEventListener('click', () => {
-    const m = compose();
-    err.hidden = !m.empty;
-    if (m.empty) { $('fb-msg').focus(); return; }
-    const text = 'To: ' + TO + '\nSubject: ' + m.subject + '\n\n' + m.body;
-    const done = () => { copyBtn.textContent = 'Copied'; setTimeout(() => copyBtn.textContent = 'Copy message', 1800); };
-    const fallback = () => { $('fb-msg').select(); copyBtn.textContent = 'Copy failed – select and copy'; };
-    try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
-  });})();
-</script>
-
 <script src="/share.js" defer></script>
-<script src="/clicks.js" defer></script>
+<script src="/app.js" defer></script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

@@ -1,0 +1,375 @@
+{
+ "sections": [
+  {
+   "id": "track",
+   "title": "Track your car",
+   "blurb": "Estimate your delivery date and follow your VIN.",
+   "layout": "rows",
+   "links": [
+    {
+     "id": "tedd-2bc4a-web-app",
+     "code": "TEDD",
+     "title": "Estimated Delivery Date tool",
+     "desc": "Work out when your car is likely to land",
+     "url": "https://tedd-2bc4a.web.app/",
+     "host": "tedd"
+    },
+    {
+     "id": "docs-google-com-spreadsheets-d-1ocz2woepo9umorilbixg6ustigkh08t6",
+     "code": "SHEET",
+     "title": "Tracking spreadsheet",
+     "desc": "Community order and delivery tracker",
+     "url": "https://docs.google.com/spreadsheets/d/1ocZ2wOEpo9umORILBIxG6UStigKh08t6gT3CyAiwlW0/edit?usp=drivesdk",
+     "host": "google sheets"
+    },
+    {
+     "id": "logisoft-io-track-shipment-by-vin",
+     "code": "VIN",
+     "title": "Track VIN – shipping",
+     "desc": "Look up your shipment by VIN",
+     "url": "https://www.logisoft.io/track-shipment-by-vin",
+     "host": "logisoft"
+    },
+    {
+     "id": "parts-tesla-com",
+     "code": "PARTS",
+     "title": "Tesla parts check",
+     "desc": "Tesla's official parts catalogue",
+     "url": "https://parts.tesla.com",
+     "host": "tesla"
+    }
+   ]
+  },
+  {
+   "id": "ships",
+   "title": "Ships & shipping",
+   "blurb": "Follow the car carriers from port to Southampton.",
+   "layout": "rows",
+   "links": [
+    {
+     "id": "teslamotorsclub-com-tmc-threads-2025-shipping-movements-319517-l",
+     "code": "TMC",
+     "title": "Shipping movements thread",
+     "desc": "The main TMC thread, opens at the latest post",
+     "url": "https://teslamotorsclub.com/tmc/threads/2025-shipping-movements.319517/latest",
+     "host": "tmc"
+    },
+    {
+     "id": "teslamotorsclub-com-tmc-search-member",
+     "code": "TMC",
+     "title": "@Temboa – latest posts",
+     "desc": "Ship updates from the thread's tracker",
+     "url": "https://teslamotorsclub.com/tmc/search/member?user_id=268404",
+     "host": "tmc"
+    },
+    {
+     "id": "teslamotorsclub-com-tmc-posts-9041308",
+     "code": "TMC",
+     "title": "@Temboa's bot/script help post",
+     "desc": "How the tracking bot works",
+     "url": "https://teslamotorsclub.com/tmc/posts/9041308/",
+     "host": "tmc"
+    },
+    {
+     "id": "tesla-propl-eu",
+     "code": "SHIP",
+     "title": "Tesla Ships – track",
+     "desc": "Live positions of Tesla car carriers",
+     "url": "https://tesla.propl.eu/",
+     "host": "propl.eu"
+    },
+    {
+     "id": "vesselfinder-com",
+     "code": "AIS",
+     "title": "Vessel Finder",
+     "desc": "Search any vessel by name",
+     "url": "https://www.vesselfinder.com/",
+     "host": "vesselfinder"
+    }
+   ]
+  },
+  {
+   "id": "webcams",
+   "title": "Southampton webcams",
+   "blurb": "Watch the UK Tesla ships sail into Southampton.",
+   "layout": "rows",
+   "links": [
+    {
+     "id": "youtube-com-live-cmsvx-eju5a",
+     "code": "IOW",
+     "title": "Isle of Wight (Ventnor)",
+     "desc": "Ventnor Esplanade, looking out to the Channel · live",
+     "url": "https://www.youtube.com/live/CmsVx-EJU5A",
+     "host": "youtube"
+    },
+    {
+     "id": "youtube-com-live-qo-ho-kwwmy",
+     "code": "FERRY",
+     "title": "Southampton–Cowes ferry cam",
+     "desc": "Red Funnel ferry cam across Southampton Water · live",
+     "url": "https://www.youtube.com/live/QO-hO_kwwmY",
+     "host": "youtube"
+    },
+    {
+     "id": "youtube-com-live-ec6xgmuw1dw",
+     "code": "BOX",
+     "title": "West Quays (BOX Cam)",
+     "desc": "Port of Southampton: container and cruise ships · live",
+     "url": "https://www.youtube.com/live/ec6xgmuW1dw",
+     "host": "youtube"
+    }
+   ]
+  },
+  {
+   "id": "chats",
+   "title": "Community chats",
+   "blurb": "Wait it out with people in the same boat.",
+   "layout": "rows",
+   "links": [
+    {
+     "id": "chat-whatsapp-com-hh6wgiom270feem7byg5kl",
+     "code": "Q3",
+     "title": "Q3 delivery chat",
+     "desc": "WhatsApp group",
+     "url": "https://chat.whatsapp.com/Hh6wGIOM270FeEM7byg5KL?s=cl&p=i&ilr=4",
+     "host": "whatsapp"
+    },
+    {
+     "id": "chat-whatsapp-com-lytuvljofep5aaaamajhtb",
+     "code": "Q4",
+     "title": "Q4 delivery chat",
+     "desc": "WhatsApp group",
+     "url": "https://chat.whatsapp.com/LyTuvlJofEP5AaaAMaJhTB?s=cl&p=i&ilr=2",
+     "host": "whatsapp"
+    },
+    {
+     "id": "chat-whatsapp-com-kth34x4ljxh5ciw8xckkoq",
+     "code": "OWN",
+     "title": "Tesla Owners chat",
+     "desc": "For when the car's arrived · 131 members",
+     "url": "https://chat.whatsapp.com/KtH34x4LjXh5ciW8xcKKoq?mode=gi_t",
+     "host": "whatsapp"
+    }
+   ]
+  },
+  {
+   "id": "resources",
+   "title": "Resources",
+   "blurb": "Reading, stats and apps for the long wait.",
+   "layout": "rows",
+   "links": [
+    {
+     "id": "notateslaapp-com",
+     "code": "NTA",
+     "title": "Not a Tesla App",
+     "desc": "News, software updates and guides",
+     "url": "https://www.notateslaapp.com/",
+     "host": "notateslaapp"
+    },
+    {
+     "id": "smmt-co-uk-vehicle-data-car-registrations",
+     "code": "SMMT",
+     "title": "UK car registrations",
+     "desc": "Monthly registration statistics",
+     "url": "https://www.smmt.co.uk/vehicle-data/car-registrations/",
+     "host": "smmt"
+    },
+    {
+     "id": "apps-apple-com-app-id1056496235",
+     "code": "iOS",
+     "title": "Supercharger Construction",
+     "desc": "iPhone app tracking new Supercharger sites",
+     "url": "https://apps.apple.com/app/id1056496235",
+     "host": "app store"
+    }
+   ]
+  },
+  {
+   "id": "extras",
+   "title": "Extras",
+   "blurb": "Getting ready for home charging.",
+   "layout": "rows",
+   "links": [
+    {
+     "id": "share-octopus-energy-great-thyme-51",
+     "code": "£100",
+     "title": "Octopus Energy referral",
+     "desc": "Want to share £100? Use this link when you switch",
+     "url": "https://share.octopus.energy/great-thyme-51",
+     "host": "octopus"
+    }
+   ]
+  },
+  {
+   "id": "passtime",
+   "title": "Ways to pass the time",
+   "blurb": "Things to do while you wait.",
+   "layout": "cards",
+   "links": [
+    {
+     "id": "abetterrouteplanner-com",
+     "title": "A Better Routeplanner",
+     "desc": "Plan imaginary road trips in your future Tesla",
+     "url": "https://abetterrouteplanner.com/",
+     "tag": "EV",
+     "highlight": true
+    },
+    {
+     "id": "neal-fun",
+     "title": "Neal.fun",
+     "desc": "Quirky web experiments, including Spend Bill Gates' Money and The Auction Game",
+     "url": "https://neal.fun/"
+    },
+    {
+     "id": "neal-fun-password-game",
+     "title": "The Password Game",
+     "desc": "Make a password that meets increasingly absurd rules",
+     "url": "https://neal.fun/password-game/"
+    },
+    {
+     "id": "neal-fun-earth-reviews",
+     "title": "Earth Reviews",
+     "desc": "Rate parts of Earth, from the Moon to bees and rain",
+     "url": "https://neal.fun/earth-reviews/"
+    },
+    {
+     "id": "geoguessr-com",
+     "title": "GeoGuessr",
+     "desc": "Guess where you are from Street View alone",
+     "url": "https://www.geoguessr.com/"
+    },
+    {
+     "id": "mapcrunch-com",
+     "title": "MapCrunch",
+     "desc": "A random button for Google Street View",
+     "url": "https://www.mapcrunch.com/"
+    },
+    {
+     "id": "radio-garden",
+     "title": "Radio Garden",
+     "desc": "Spin the globe and listen to live radio from any city",
+     "url": "https://radio.garden/"
+    },
+    {
+     "id": "window-swap-com",
+     "title": "WindowSwap",
+     "desc": "The view from a stranger's window somewhere on Earth",
+     "url": "https://www.window-swap.com/"
+    },
+    {
+     "id": "stars-chromeexperiments-com",
+     "title": "100,000 Stars",
+     "desc": "An interactive tour of our stellar neighbourhood",
+     "url": "https://stars.chromeexperiments.com/"
+    },
+    {
+     "id": "htwins-net-scale2",
+     "title": "The Scale of the Universe 2",
+     "desc": "Zoom from a quantum string to the edge of the universe",
+     "url": "https://htwins.net/scale2/"
+    },
+    {
+     "id": "zoomquilt-org",
+     "title": "Zoom Quilt",
+     "desc": "An endless, hypnotic artistic zoom",
+     "url": "https://zoomquilt.org/"
+    },
+    {
+     "id": "asoftmurmur-com",
+     "title": "A Soft Murmur",
+     "desc": "Mix your own rain, thunder, birdsong and café sounds",
+     "url": "https://asoftmurmur.com/",
+     "tag": "Sound on"
+    },
+    {
+     "id": "incredibox-com",
+     "title": "Incredibox",
+     "desc": "Drag icons onto beatboxers to make your own songs",
+     "url": "https://www.incredibox.com/",
+     "tag": "Sound on"
+    },
+    {
+     "id": "quickdraw-withgoogle-com",
+     "title": "Quick, Draw!",
+     "desc": "Draw something and an AI tries to guess it in under 20 seconds",
+     "url": "https://quickdraw.withgoogle.com/"
+    },
+    {
+     "id": "skribbl-io",
+     "title": "Skribbl.io",
+     "desc": "Online drawing and guessing with friends or strangers",
+     "url": "https://skribbl.io/"
+    },
+    {
+     "id": "play2048-co",
+     "title": "2048",
+     "desc": "Combine numbered tiles to reach the 2048 block",
+     "url": "https://play2048.co/"
+    },
+    {
+     "id": "jurassicsystems-com",
+     "title": "Jurassic Systems",
+     "desc": "Play the technician hacking Jurassic Park's 90s computer system",
+     "url": "https://jurassicsystems.com/"
+    },
+    {
+     "id": "hackertyper-net",
+     "title": "Hacker Typer",
+     "desc": "Type anything and the screen fills with convincing \"hacker\" code",
+     "url": "https://hackertyper.net/",
+     "tag": "Best on a computer"
+    },
+    {
+     "id": "findtheinvisiblecow-com",
+     "title": "Find the Invisible Cow",
+     "desc": "Hunt for a hidden cow by following the sound it makes",
+     "url": "https://findtheinvisiblecow.com/",
+     "tag": "Sound on"
+    },
+    {
+     "id": "pointerpointer-com",
+     "title": "Pointer Pointer",
+     "desc": "Finds a photo of someone pointing exactly at your cursor",
+     "url": "https://pointerpointer.com/",
+     "tag": "Best on a computer"
+    },
+    {
+     "id": "wikiroulette-co",
+     "title": "Wiki Roulette",
+     "desc": "Land on a random Wikipedia page",
+     "url": "https://wikiroulette.co/"
+    },
+    {
+     "id": "en-wikipedia-org-wiki-wikipedia-unusual-articles",
+     "title": "Wikipedia's unusual articles",
+     "desc": "The weirdest corners of human knowledge",
+     "url": "https://en.wikipedia.org/wiki/Wikipedia:Unusual_articles"
+    },
+    {
+     "id": "theuselessweb-com",
+     "title": "The Useless Web",
+     "desc": "A random trip to the strangest corners of the internet",
+     "url": "https://theuselessweb.com/"
+    },
+    {
+     "id": "boredbutton-com",
+     "title": "The Bored Button",
+     "desc": "Can't decide? Press the button and go somewhere random",
+     "url": "https://www.boredbutton.com/"
+    },
+    {
+     "id": "screamintothevoid-com",
+     "title": "Scream Into the Void",
+     "desc": "Type out your delivery frustrations and watch them vanish",
+     "url": "https://screamintothevoid.com/"
+    },
+    {
+     "id": "papertoilet-com",
+     "title": "Paper Toilet",
+     "desc": "Unroll a digital toilet roll as fast as you can",
+     "url": "https://papertoilet.com/"
+    }
+   ]
+  }
+ ]
+}
