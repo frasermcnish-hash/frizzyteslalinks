@@ -41,11 +41,12 @@
       const items = s.links.map(s.layout === 'cards' ? cardHTML : rowHTML).join('');
       return '<section id="' + esc(s.id) + '">' +
         '<h2>' + esc(s.title) + ' <span class="count"></span></h2>' +
+        '<div class="fsec-body">' +
         (s.blurb ? '<p>' + esc(s.blurb) + '</p>' : '') +
         '<div class="extra" data-for="' + esc(s.id) + '"></div>' +
         (s.layout === 'cards'
           ? '<details class="fold"><summary><span class="fold-title">' + esc(foldLabel(s)) + '</span><span class="fold-n">' + s.links.length + '</span></summary><ul class="fun">' + items + '</ul></details>'
-          : '<ul class="links">' + items + '</ul>') + '</section>';
+          : '<ul class="links">' + items + '</ul>') + '</div></section>';
     }).join('');
     list.innerHTML = html;
     // Static extras (e.g. the Wait Club routine) slot into their section.
@@ -66,13 +67,64 @@
         nav.insertBefore(a, anchor);
       });
     }
+    list.querySelectorAll('section').forEach(makeFoldable);
     filter();
     paintCounts();
     if (location.hash && !render.scrolled) {
       const el = document.getElementById(location.hash.slice(1));
-      if (el) { el.scrollIntoView(); render.scrolled = true; }
+      if (el) { setOpen(el, true, false); el.scrollIntoView(); render.scrolled = true; }
     }
   }
+
+  // ---------- Collapsible sections ----------
+  // Each section folds under its heading. What a visitor opens is remembered on their device.
+  const OPEN_KEY = 'ftl-open-v1';
+  const openSet = (() => { try { return new Set(JSON.parse(localStorage.getItem(OPEN_KEY)) || []); } catch (e) { return new Set(); } })();
+  const saveOpen = () => { try { localStorage.setItem(OPEN_KEY, JSON.stringify([...openSet])); } catch (e) {} };
+
+  function makeFoldable(sec) {
+    if (sec.dataset.fold) return;
+    const h2 = sec.querySelector('h2');
+    if (!h2) return;
+    let body = sec.querySelector(':scope > .fsec-body');
+    if (!body) { // static sections: gather everything after the heading
+      body = document.createElement('div'); body.className = 'fsec-body';
+      while (h2.nextSibling) body.appendChild(h2.nextSibling);
+      sec.appendChild(body);
+    }
+    body.id = body.id || sec.id + '-body';
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'fsec-btn';
+    btn.setAttribute('aria-controls', body.id);
+    const title = document.createElement('span'); title.className = 'fsec-title';
+    const count = h2.querySelector('.count');
+    title.append(...[...h2.childNodes].filter(n => n !== count));
+    btn.appendChild(title);
+    if (count) btn.appendChild(count);
+    const chev = document.createElement('span'); chev.className = 'chev'; chev.setAttribute('aria-hidden', 'true');
+    btn.appendChild(chev);
+    h2.textContent = ''; h2.appendChild(btn); h2.classList.add('fsec-head');
+    sec.classList.add('fsec'); sec.dataset.fold = '1';
+    btn.addEventListener('click', () => setOpen(sec, body.hidden, true));
+    setOpen(sec, openSet.has(sec.id), false);
+  }
+  function setOpen(sec, open, remember) {
+    const body = sec.querySelector(':scope > .fsec-body'), btn = sec.querySelector('.fsec-btn');
+    if (!body || !btn) return;
+    body.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+    sec.classList.toggle('open', open);
+    if (remember) { open ? openSet.add(sec.id) : openSet.delete(sec.id); saveOpen(); }
+  }
+  // Section chips and other in-page links open the section they point to.
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const sec = document.getElementById(a.getAttribute('href').slice(1));
+    if (sec && sec.dataset.fold) setOpen(sec, true, true);
+  });
+  const legends = $('legends');
+  if (legends && list) makeFoldable(legends);
 
   async function loadLinks() {
     if (!list) return;
@@ -110,6 +162,10 @@
         li.hidden = !match; if (match) shown++;
       });
       s.hidden = shown === 0;
+      if (s.dataset.fold) {
+        if (term) setOpen(s, shown > 0, false);
+        else setOpen(s, openSet.has(s.id), false);
+      }
       const linkCount = s.querySelectorAll('ul.links > li:not([hidden]), ul.fun > li:not([hidden])').length;
       const c = s.querySelector('.count');
       if (c) c.textContent = linkCount + (linkCount === 1 ? ' link' : ' links');
