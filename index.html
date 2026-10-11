@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frizzy's Tesla Links</title>
+<meta name="description" content="Your survival kit for the Tesla Wait Club: delivery trackers, ship tracking, Southampton webcams, community chats and FAQs.">
+<meta property="og:title" content="Frizzy's Tesla Links">
+<meta property="og:description" content="Your survival kit for the Tesla Wait Club: trackers, ships, webcams, chats and FAQs.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#17344f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317344f'/%3E%3Cpath d='M6 19h20l-3 6H9z' fill='%23fff'/%3E%3Crect x='11' y='12' width='10' height='6' fill='%23c8102e'/%3E%3C/svg%3E">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a single-column "shipping manifest" — grouped link rows with port-code tags, sticky search and section chips */
+:root {
+  --bg: #eef2f5;
+  --surface: #ffffff;
+  --ink: #0f1d2b;
+  --muted: #5b6b7a;
+  --line: #d5dde4;
+  --accent: #c8102e;
+  --accent-soft: #fbe7ea;
+  --harbour: #17344f;
+  --chip: #e2e9ef;
+  --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b141d; --surface: #13202c; --ink: #e7eef4; --muted: #93a4b4;
+    --line: #22344a; --accent: #ff4d5e; --accent-soft: #3a1820; --harbour: #8fb7da; --chip: #1c2d3d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b141d; --surface: #13202c; --ink: #e7eef4; --muted: #93a4b4;
+  --line: #22344a; --accent: #ff4d5e; --accent-soft: #3a1820; --harbour: #8fb7da; --chip: #1c2d3d;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 640px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 48px; }
+
+header { display: grid; gap: 10px; padding-block-end: 18px; }
+.eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.4rem, 9vw, 3.4rem); line-height: .95; margin: 0; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; }
+.lede { margin: 0; color: var(--muted); max-width: 52ch; }
+.bookmark { display: flex; gap: 10px; align-items: center; font-size: 13px; color: var(--ink); background: var(--accent-soft); border-radius: 6px; padding: 8px 12px; }
+.bookmark kbd { font-family: var(--font-mono); font-size: 11px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+
+.toolbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 10px; display: grid; gap: 10px; border-bottom: 1px solid var(--line); }
+.search { width: 100%; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.search:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+.chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.chips a { flex: none; font-family: var(--font-mono); font-size: 12px; text-decoration: none; color: var(--ink); background: var(--chip); border-radius: 999px; padding: 5px 11px; }
+.chips a:hover, .chips a:focus-visible { background: var(--harbour); color: var(--bg); outline: none; }
+
+section { padding-block-start: 26px; scroll-margin-top: 110px; }
+section h2 { display: flex; align-items: baseline; gap: 10px; font-family: var(--font-display); font-weight: 600; font-size: 1.45rem; text-transform: uppercase; letter-spacing: .03em; margin: 0 0 4px; color: var(--harbour); }
+section h2 .count { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: .05em; }
+section > p { margin: 0 0 10px; color: var(--muted); font-size: 13.5px; }
+
+ul.links { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+ul.links li + li { border-top: 1px solid var(--line); }
+ul.links a { display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; color: inherit; text-decoration: none; }
+ul.links a:hover { background: var(--chip); }
+ul.links a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.code { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--harbour); border: 1px solid var(--line); border-radius: 4px; text-align: center; padding: 3px 0; }
+.txt { min-width: 0; }
+.txt strong { display: block; font-weight: 600; }
+.txt span { display: block; color: var(--muted); font-size: 13px; }
+.host { font-family: var(--font-mono); font-size: 11px; color: var(--muted); white-space: nowrap; }
+.arrow { color: var(--accent); }
+@media (max-width: 460px) { .host-name { display: none; } }
+
+.guide { padding-block: 4px 22px; display: grid; gap: 10px; }
+.guide-title { font-family: var(--font-display); font-weight: 600; font-size: 1.6rem; text-transform: uppercase; letter-spacing: .03em; margin: 0; color: var(--harbour); }
+.guide-lede { margin: 0; color: var(--muted); font-size: 13.5px; }
+.voyage { list-style: none; margin: 4px 0 6px; padding: 0 0 0 18px; border-left: 2px dashed var(--harbour); display: grid; gap: 12px; }
+.voyage li { position: relative; display: grid; gap: 1px; }
+.voyage li::before { content: ""; position: absolute; left: -25px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--harbour); }
+.voyage li:last-child::before { background: var(--accent); border-color: var(--accent); }
+.stop { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--harbour); }
+.what { font-size: 14px; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+summary { cursor: pointer; font-weight: 600; padding: 12px 14px; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-family: var(--font-mono); color: var(--accent); }
+details[open] summary::after { content: "–"; }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 10px; }
+.det { padding: 0 14px 14px; display: grid; gap: 10px; font-size: 14px; max-width: 65ch; }
+.det p, .det ul { margin: 0; }
+.det ul { padding-left: 18px; display: grid; gap: 6px; }
+.det a { color: var(--accent); }
+.route { border-collapse: collapse; width: 100%; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.route th, .route td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.route th { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.route td:last-child, .route th:last-child { text-align: right; white-space: nowrap; }
+#legends { margin-top: 26px; scroll-margin-top: 110px; }
+#guide, #faqs { scroll-margin-top: 110px; }
+.legend { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 8px; }
+.legend p { margin: 0; font-size: 14px; }
+.legend details { border: 0; border-top: 1px solid var(--line); border-radius: 0; margin-inline: -14px; margin-bottom: -14px; }
+.legend-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.handle { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; letter-spacing: .02em; }
+.status { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); background: var(--chip); padding: 2px 8px; border-radius: 999px; }
+.status.on { color: var(--accent); background: var(--accent-soft); }
+.legend-link { color: var(--accent); font-size: 13.5px; font-weight: 600; text-decoration: none; }
+.legend-link:hover { text-decoration: underline; }
+.sub { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 16px 0 8px; }
+.routine { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.routine li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; font-size: 14px; }
+.routine .tick { width: 16px; height: 16px; margin-top: 3px; border: 2px solid var(--harbour); border-radius: 4px; }
+.routine a { color: var(--accent); }
+.fun { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 8px; }
+.fun a { height: 100%; display: grid; align-content: start; gap: 3px; padding: 11px 13px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; color: inherit; text-decoration: none; }
+.fun a:hover { border-color: var(--harbour); }
+.fun a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.fun strong { font-weight: 600; }
+.fun span { color: var(--muted); font-size: 13px; }
+.fun .tag { justify-self: start; margin-top: 4px; font-style: normal; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--harbour); background: var(--chip); padding: 2px 7px; border-radius: 999px; }
+.fun .tag.ev { color: var(--accent); background: var(--accent-soft); }
+.empty { display: none; padding: 30px 0; color: var(--muted); text-align: center; }
+
+.contact { margin-top: 30px; display: grid; gap: 8px; padding: 16px; border: 1px dashed var(--line); border-radius: 10px; }
+.contact h2 { font-family: var(--font-display); font-weight: 600; text-transform: uppercase; font-size: 1.2rem; margin: 0; color: var(--harbour); }
+.contact p { margin: 0; color: var(--muted); font-size: 13.5px; }
+.mailrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.mail { font-family: var(--font-mono); font-size: 13px; user-select: all; background: var(--chip); padding: 6px 10px; border-radius: 6px; overflow-wrap: anywhere; }
+button { font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; color: #fff; background: var(--accent); border: 0; border-radius: 6px; padding: 7px 14px; }
+button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.fb { display: grid; gap: 12px; margin-top: 4px; }
+.field { display: grid; gap: 4px; }
+.field label { font-size: 13px; font-weight: 600; }
+.opt { font-weight: 400; color: var(--muted); font-size: 12px; }
+.fb input, .fb select, .fb textarea { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; }
+.fb textarea { resize: vertical; min-height: 90px; }
+.fb input:focus, .fb select:focus, .fb textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.actions button { padding: 10px 16px; font-size: 14px; }
+button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.err { margin: 0; color: var(--accent); font-size: 13px; font-weight: 600; }
+.hint { margin: 0; font-size: 12.5px; color: var(--muted); }
+.contact { scroll-margin-top: 110px; }
+footer { margin-top: 28px; font-size: 12px; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Tesla Wait Club · UK</div>
+    <h1>Frizzy's Tesla Links</h1>
+    <p class="lede">Your survival kit for the wait. Don't just refresh the app — every tracker, chat and resource worth having is here, grouped so you can find it fast.</p>
+    <div class="bookmark">★ <span>Bookmark this page so it's one tap away. On a phone, use <kbd>Share</kbd> → <kbd>Add to Home Screen</kbd>.</span></div>
+  </header>
+
+  <section class="guide" id="guide">
+    <div class="eyebrow">Start here</div>
+    <h2 class="guide-title">How tracking ships helps you</h2>
+    <p class="guide-lede">Your car's journey from Shanghai to Southampton, and when your VIN usually shows up.</p>
+    <ol class="voyage">
+      <li><span class="stop">Shanghai</span><span class="what">Car built and loaded on a ship. That's when it's truly matched to your order.</span></li>
+      <li><span class="stop">Singapore</span><span class="what">VIN usually appears, but only in the bots and scripts</span></li>
+      <li><span class="stop">Cape of Good Hope</span><span class="what">VIN usually appears in the Tesla app</span></li>
+      <li><span class="stop">Southampton</span><span class="what">Arrives about 35–45 days after leaving Shanghai</span></li>
+    </ol>
+
+    <details>
+      <summary>Why follow the ships?</summary>
+      <div class="det">
+        <p>The <a href="https://teslamotorsclub.com/tmc/threads/2025-shipping-movements.319517/latest" target="_blank" rel="noopener">TMC Shipping Movements thread</a> tracks Tesla shipments heading to Europe throughout 2026.</p>
+        <p>Once you've ordered, there's usually a quiet spell when you hear very little from Tesla. Tesla builds cars in batches, not to order. A car is only really matched to your order once it's assigned to production and allocated to a ship. Following those ships is the most reliable way to get a feel for when your car will arrive.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Where the cars come from</summary>
+      <div class="det">
+        <ul>
+          <li><strong>Model Y:</strong> most UK and European cars are now built at Giga Berlin, so far fewer arrive by sea from China.</li>
+          <li><strong>Model 3:</strong> still built at Giga Shanghai and shipped to the main hubs, including Zeebrugge, Koper and Barcelona.</li>
+          <li><strong>Route:</strong> all ships from Shanghai to Europe now go round the Cape of Good Hope to keep schedules reliable.</li>
+        </ul>
+        <table class="route">
+          <thead><tr><th>Shanghai → Southampton</th><th>Typical transit</th></tr></thead>
+          <tbody>
+            <tr><td>Via Suez Canal (old route)</td><td>30–35 days</td></tr>
+            <tr><td>Via Cape of Good Hope (now)</td><td>35–45 days</td></tr>
+          </tbody>
+        </table>
+        <p>Going round the Cape adds roughly 3,000–4,000 nautical miles, which is usually one to two extra weeks depending on the ship's speed and the sea conditions.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>VINs and the trackers</summary>
+      <div class="det">
+        <p>A VIN is usually assigned once your car is built and allocated to a ship, often when it's already at the port or at sea. The VIN is often in Tesla's system days before the app shows it.</p>
+        <ul>
+          <li><strong>Trackers:</strong> community tools use the Tesla Fleet API to check your order status more often than the app does.</li>
+          <li><strong>Early data:</strong> when your order is matched, these tools can show your VIN and updated delivery window before the app refreshes.</li>
+        </ul>
+        <p>See <a href="https://teslamotorsclub.com/tmc/posts/9041308/" target="_blank" rel="noopener">@Temboa's bot/script help post</a> for the tools.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Tracking tools and thanks</summary>
+      <div class="det">
+        <p>Special thanks to <a href="https://teslamotorsclub.com/tmc/search/member?user_id=268404" target="_blank" rel="noopener">@Temboa</a>, who keeps posting updates, tracking and arrival estimates for ships heading to European ports.</p>
+        <ul>
+          <li><a href="https://www.marinetraffic.com/" target="_blank" rel="noopener">MarineTraffic</a> is widely used to follow ship positions using VHF and satellite data.</li>
+          <li>@Temboa and friends built <a href="https://tesla.propl.eu/" target="_blank" rel="noopener">Tesla Ships</a>, which tracks confirmed and suspected ships.</li>
+          <li>Many "suspect" ships turn out to be false alarms, so the thread sticks to verified data.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section class="guide" id="faqs">
+    <div class="eyebrow">Tracking FAQs</div>
+    <h2 class="guide-title">Questions people ask</h2>
+
+    <details>
+      <summary>When are VINs assigned for cars leaving Shanghai?</summary>
+      <div class="det">
+        <p>Usually while the ship is sailing through the South China Sea, before it reaches Singapore or the Jakarta Strait. We've also seen assignments in the Indian Ocean, but that's less common.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>When are VINs assigned for Model Y from Berlin?</summary>
+      <div class="det">
+        <p>Model Y VINs are sent directly from the Berlin factory.</p>
+        <table class="route">
+          <thead><tr><th>What you see</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td>No VIN in the thread's tools</td><td>Your car doesn't exist yet</td></tr>
+            <tr><td>VIN in the tools, not in the app</td><td>Production is planned</td></tr>
+            <tr><td>VIN in the Tesla app</td><td>Car is built. Now it's down to transport</td></tr>
+          </tbody>
+        </table>
+        <p>Model Ys for Ireland go to Zeebrugge, then by ship to Dublin.</p>
+        <p>It's hard to tell which ship a Berlin-built Model Y is on. They travel in small batches alongside other brands' cars, and several ships may do the run each week.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>My EDD keeps moving. Is that normal?</summary>
+      <div class="det">
+        <p>Yes. Until you have a VIN, the Estimated Delivery Date is Tesla's best guess and can jump around a lot. Don't lose hope if it jumps later. It can jump back at any point.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>How does sharing my VIN with @Temboa help?</summary>
+      <div class="det">
+        <p>When you share your VIN and EDD, it joins everyone else's to build a picture of which VINs for which countries are on the move. Sometimes one Tesla adviser telling one customer something is enough to confirm it for everyone.</p>
+        <p>Your VIN isn't secret. Anyone can read it through the windscreen when the car's parked. If you'd rather not share all of it, the last 5 digits are still a real help.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Once I have a VIN, can I track my car on any ship?</summary>
+      <div class="det">
+        <p>Some shipping companies let you track a VIN on a ship, but most don't. You can try your luck with <a href="https://www.logisoft.io/track-shipment-by-vin" target="_blank" rel="noopener">Logisoft's VIN tracker</a>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Could my car come with the black headliner and 16-inch screen?</summary>
+      <div class="det">
+        <p>We won't know until the first Q2 deliveries arrive and we see what's been shipped.</p>
+      </div>
+    </details>
+  </section>
+
+  <div class="toolbar">
+    <label for="q" class="eyebrow" style="color:var(--muted)">Find a link</label>
+    <input id="q" class="search" type="search" placeholder="Try “ship”, “VIN” or “WhatsApp”" autocomplete="off">
+    <nav class="chips" aria-label="Sections">
+      <a href="#guide">Start here</a>
+      <a href="#faqs">FAQs</a>
+      <a href="#track">Track your car</a>
+      <a href="#ships">Ships</a>
+      <a href="#webcams">Webcams</a>
+      <a href="#chats">Chats</a>
+      <a href="#resources">Resources</a>
+      <a href="#extras">Extras</a>
+      <a href="#passtime">Pass the time</a>
+      <a href="#legends">Legends</a>
+      <a href="#feedback">Suggest a link</a>
+    </nav>
+  </div>
+
+  <main id="list">
+    <section id="track">
+      <h2>Track your car <span class="count"></span></h2>
+      <p>Estimate your delivery date and follow your VIN.</p>
+      <ul class="links">
+        <li><a href="https://tedd-2bc4a.web.app/" target="_blank" rel="noopener"><span class="code">TEDD</span><span class="txt"><strong>Estimated Delivery Date tool</strong><span>Work out when your car is likely to land</span></span><span class="host"><span class="host-name">tedd </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://docs.google.com/spreadsheets/d/1ocZ2wOEpo9umORILBIxG6UStigKh08t6gT3CyAiwlW0/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="code">SHEET</span><span class="txt"><strong>Tracking spreadsheet</strong><span>Community order and delivery tracker</span></span><span class="host"><span class="host-name">google sheets </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://www.logisoft.io/track-shipment-by-vin" target="_blank" rel="noopener"><span class="code">VIN</span><span class="txt"><strong>Track VIN – shipping</strong><span>Look up your shipment by VIN</span></span><span class="host"><span class="host-name">logisoft </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://parts.tesla.com" target="_blank" rel="noopener"><span class="code">PARTS</span><span class="txt"><strong>Tesla parts check</strong><span>Tesla's official parts catalogue</span></span><span class="host"><span class="host-name">tesla </span><span class="arrow">↗</span></span></a></li>
+      </ul>
+    </section>
+
+    <section id="ships">
+      <h2>Ships &amp; shipping <span class="count"></span></h2>
+      <p>Follow the car carriers from port to Southampton.</p>
+      <ul class="links">
+        <li><a href="https://teslamotorsclub.com/tmc/threads/2025-shipping-movements.319517/latest" target="_blank" rel="noopener"><span class="code">TMC</span><span class="txt"><strong>Shipping movements thread</strong><span>The main TMC thread, opens at the latest post</span></span><span class="host"><span class="host-name">tmc </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://teslamotorsclub.com/tmc/search/member?user_id=268404" target="_blank" rel="noopener"><span class="code">TMC</span><span class="txt"><strong>@Temboa – latest posts</strong><span>Ship updates from the thread's tracker</span></span><span class="host"><span class="host-name">tmc </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://teslamotorsclub.com/tmc/posts/9041308/" target="_blank" rel="noopener"><span class="code">TMC</span><span class="txt"><strong>@Temboa's bot/script help post</strong><span>How the tracking bot works</span></span><span class="host"><span class="host-name">tmc </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://tesla.propl.eu/" target="_blank" rel="noopener"><span class="code">SHIP</span><span class="txt"><strong>Tesla Ships – track</strong><span>Live positions of Tesla car carriers</span></span><span class="host"><span class="host-name">propl.eu </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://www.vesselfinder.com/" target="_blank" rel="noopener"><span class="code">AIS</span><span class="txt"><strong>Vessel Finder</strong><span>Search any vessel by name</span></span><span class="host"><span class="host-name">vesselfinder </span><span class="arrow">↗</span></span></a></li>
+      </ul>
+    </section>
+
+    <section id="webcams">
+      <h2>Southampton webcams <span class="count"></span></h2>
+      <p>Watch the UK Tesla ships sail into Southampton.</p>
+      <ul class="links">
+        <li><a href="https://www.youtube.com/live/CmsVx-EJU5A" target="_blank" rel="noopener"><span class="code">IOW</span><span class="txt"><strong>Isle of Wight</strong><span>Ships coming into the Solent · live</span></span><span class="host"><span class="host-name">youtube </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://www.youtube.com/live/QO-hO_kwwmY" target="_blank" rel="noopener"><span class="code">DOCK</span><span class="txt"><strong>Southampton Dock</strong><span>Ships arriving at the port · live</span></span><span class="host"><span class="host-name">youtube </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://www.youtube.com/live/ec6xgmuW1dw" target="_blank" rel="noopener"><span class="code">BOX</span><span class="txt"><strong>West Quays (BOX Cam)</strong><span>Live view from West Quay · live</span></span><span class="host"><span class="host-name">youtube </span><span class="arrow">↗</span></span></a></li>
+      </ul>
+    </section>
+
+    <section id="chats">
+      <h2>Community chats <span class="count"></span></h2>
+      <p>Wait it out with people in the same boat.</p>
+      <ul class="links">
+        <li><a href="https://chat.whatsapp.com/Hh6wGIOM270FeEM7byg5KL?s=cl&amp;p=i&amp;ilr=4" target="_blank" rel="noopener"><span class="code">Q3</span><span class="txt"><strong>Q3 delivery chat</strong><span>WhatsApp group</span></span><span class="host"><span class="host-name">whatsapp </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://chat.whatsapp.com/LyTuvlJofEP5AaaAMaJhTB?s=cl&amp;p=i&amp;ilr=2" target="_blank" rel="noopener"><span class="code">Q4</span><span class="txt"><strong>Q4 delivery chat</strong><span>WhatsApp group</span></span><span class="host"><span class="host-name">whatsapp </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://chat.whatsapp.com/KtH34x4LjXh5ciW8xcKKoq?mode=gi_t" target="_blank" rel="noopener"><span class="code">OWN</span><span class="txt"><strong>Tesla Owners chat</strong><span>For when the car's arrived · 131 members</span></span><span class="host"><span class="host-name">whatsapp </span><span class="arrow">↗</span></span></a></li>
+      </ul>
+    </section>
+
+    <section id="resources">
+      <h2>Resources <span class="count"></span></h2>
+      <p>Reading, stats and apps for the long wait.</p>
+      <ul class="links">
+        <li><a href="https://www.notateslaapp.com/" target="_blank" rel="noopener"><span class="code">NTA</span><span class="txt"><strong>Not a Tesla App</strong><span>News, software updates and guides</span></span><span class="host"><span class="host-name">notateslaapp </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://www.smmt.co.uk/vehicle-data/car-registrations/" target="_blank" rel="noopener"><span class="code">SMMT</span><span class="txt"><strong>UK car registrations</strong><span>Monthly registration statistics</span></span><span class="host"><span class="host-name">smmt </span><span class="arrow">↗</span></span></a></li>
+        <li><a href="https://apps.apple.com/app/id1056496235" target="_blank" rel="noopener"><span class="code">iOS</span><span class="txt"><strong>Supercharger Construction</strong><span>iPhone app tracking new Supercharger sites</span></span><span class="host"><span class="host-name">app store </span><span class="arrow">↗</span></span></a></li>
+      </ul>
+    </section>
+
+    <section id="extras">
+      <h2>Extras <span class="count"></span></h2>
+      <p>Getting ready for home charging.</p>
+      <ul class="links">
+        <li><a href="https://share.octopus.energy/great-thyme-51" target="_blank" rel="noopener"><span class="code">£100</span><span class="txt"><strong>Octopus Energy referral</strong><span>Want to share £100? Use this link when you switch</span></span><span class="host"><span class="host-name">octopus </span><span class="arrow">↗</span></span></a></li>
+      </ul>
+    </section>
+
+    <section id="passtime">
+      <h2>Ways to pass the time <span class="count"></span></h2>
+      <p>Things to do while you wait.</p>
+
+      <h3 class="sub">The official Wait Club routine</h3>
+      <ul class="routine">
+        <li><span class="tick" aria-hidden="true"></span><span>Check the status in your Tesla app every few minutes of every day</span></li>
+        <li><span class="tick" aria-hidden="true"></span><span><a href="https://www.tesla.com/en_gb/drive" target="_blank" rel="noopener">Book a test drive</a>, just for the fun of it</span></li>
+        <li><span class="tick" aria-hidden="true"></span><span>Once you know which boat has your car, track it on <a href="https://tesla.propl.eu/" target="_blank" rel="noopener">Tesla Ships</a> and <a href="https://www.marinetraffic.com/" target="_blank" rel="noopener">MarineTraffic</a>, even though you checked 5 minutes ago</span></li>
+        <li><span class="tick" aria-hidden="true"></span><span>Check the <a href="https://teslamotorsclub.com/tmc/threads/2025-shipping-movements.319517/latest" target="_blank" rel="noopener">forums</a></span></li>
+        <li><span class="tick" aria-hidden="true"></span><span>Read the latest expert post from <a href="https://teslamotorsclub.com/tmc/search/member?user_id=268404" target="_blank" rel="noopener">@Temboa</a></span></li>
+      </ul>
+
+      <h3 class="sub">Distractions from the internet</h3>
+      <ul class="fun">
+        <li><a href="https://abetterrouteplanner.com/" target="_blank" rel="noopener"><strong>A Better Routeplanner</strong><span>Plan imaginary road trips in your future Tesla</span><em class="tag ev">EV</em></a></li>
+        <li><a href="https://neal.fun/" target="_blank" rel="noopener"><strong>Neal.fun</strong><span>Quirky web experiments, including Spend Bill Gates' Money and The Auction Game</span></a></li>
+        <li><a href="https://neal.fun/password-game/" target="_blank" rel="noopener"><strong>The Password Game</strong><span>Make a password that meets increasingly absurd rules</span></a></li>
+        <li><a href="https://neal.fun/earth-reviews/" target="_blank" rel="noopener"><strong>Earth Reviews</strong><span>Rate parts of Earth, from the Moon to bees and rain</span></a></li>
+        <li><a href="https://www.geoguessr.com/" target="_blank" rel="noopener"><strong>GeoGuessr</strong><span>Guess where you are from Street View alone</span></a></li>
+        <li><a href="https://www.mapcrunch.com/" target="_blank" rel="noopener"><strong>MapCrunch</strong><span>A random button for Google Street View</span></a></li>
+        <li><a href="https://radio.garden/" target="_blank" rel="noopener"><strong>Radio Garden</strong><span>Spin the globe and listen to live radio from any city</span></a></li>
+        <li><a href="https://www.window-swap.com/" target="_blank" rel="noopener"><strong>WindowSwap</strong><span>The view from a stranger's window somewhere on Earth</span></a></li>
+        <li><a href="https://stars.chromeexperiments.com/" target="_blank" rel="noopener"><strong>100,000 Stars</strong><span>An interactive tour of our stellar neighbourhood</span></a></li>
+        <li><a href="https://htwins.net/scale2/" target="_blank" rel="noopener"><strong>The Scale of the Universe 2</strong><span>Zoom from a quantum string to the edge of the universe</span></a></li>
+        <li><a href="https://zoomquilt.org/" target="_blank" rel="noopener"><strong>Zoom Quilt</strong><span>An endless, hypnotic artistic zoom</span></a></li>
+        <li><a href="https://asoftmurmur.com/" target="_blank" rel="noopener"><strong>A Soft Murmur</strong><span>Mix your own rain, thunder, birdsong and café sounds</span><em class="tag">Sound on</em></a></li>
+        <li><a href="https://www.incredibox.com/" target="_blank" rel="noopener"><strong>Incredibox</strong><span>Drag icons onto beatboxers to make your own songs</span><em class="tag">Sound on</em></a></li>
+        <li><a href="https://quickdraw.withgoogle.com/" target="_blank" rel="noopener"><strong>Quick, Draw!</strong><span>Draw something and an AI tries to guess it in under 20 seconds</span></a></li>
+        <li><a href="https://skribbl.io/" target="_blank" rel="noopener"><strong>Skribbl.io</strong><span>Online drawing and guessing with friends or strangers</span></a></li>
+        <li><a href="https://play2048.co/" target="_blank" rel="noopener"><strong>2048</strong><span>Combine numbered tiles to reach the 2048 block</span></a></li>
+        <li><a href="https://jurassicsystems.com/" target="_blank" rel="noopener"><strong>Jurassic Systems</strong><span>Play the technician hacking Jurassic Park's 90s computer system</span></a></li>
+        <li><a href="https://hackertyper.net/" target="_blank" rel="noopener"><strong>Hacker Typer</strong><span>Type anything and the screen fills with convincing "hacker" code</span><em class="tag">Best on a computer</em></a></li>
+        <li><a href="https://findtheinvisiblecow.com/" target="_blank" rel="noopener"><strong>Find the Invisible Cow</strong><span>Hunt for a hidden cow by following the sound it makes</span><em class="tag">Sound on</em></a></li>
+        <li><a href="https://pointerpointer.com/" target="_blank" rel="noopener"><strong>Pointer Pointer</strong><span>Finds a photo of someone pointing exactly at your cursor</span><em class="tag">Best on a computer</em></a></li>
+        <li><a href="https://wikiroulette.co/" target="_blank" rel="noopener"><strong>Wiki Roulette</strong><span>Land on a random Wikipedia page</span></a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Wikipedia:Unusual_articles" target="_blank" rel="noopener"><strong>Wikipedia's unusual articles</strong><span>The weirdest corners of human knowledge</span></a></li>
+        <li><a href="https://theuselessweb.com/" target="_blank" rel="noopener"><strong>The Useless Web</strong><span>A random trip to the strangest corners of the internet</span></a></li>
+        <li><a href="https://www.boredbutton.com/" target="_blank" rel="noopener"><strong>The Bored Button</strong><span>Can't decide? Press the button and go somewhere random</span></a></li>
+        <li><a href="https://screamintothevoid.com/" target="_blank" rel="noopener"><strong>Scream Into the Void</strong><span>Type out your delivery frustrations and watch them vanish</span></a></li>
+        <li><a href="https://papertoilet.com/" target="_blank" rel="noopener"><strong>Paper Toilet</strong><span>Unroll a digital toilet roll as fast as you can</span></a></li>
+      </ul>
+    </section>
+
+    <p class="empty" id="empty">No links match that. Try a shorter word.</p>
+  </main>
+
+  <section class="guide" id="legends">
+    <div class="eyebrow">Ship gurus</div>
+    <h2 class="guide-title">The legends</h2>
+    <p class="guide-lede">Looking for help? Watch for posts from these two.</p>
+
+    <div class="legend">
+      <div class="legend-head"><span class="handle">@Temboa</span><span class="status on">Active</span></div>
+      <p>Active on the TMC forum, currently posting every other day on confirmed and suspected ships.</p>
+      <a class="legend-link" href="https://teslamotorsclub.com/tmc/search/member?user_id=268404" target="_blank" rel="noopener">See @Temboa's latest posts ↗</a>
+    </div>
+
+    <div class="legend">
+      <div class="legend-head"><span class="handle">@Mr Miserable</span><span class="status">On a break</span></div>
+      <p>Ran the ship (pardon the pun) from the days his first Tesla was built and shipped from the USA. Now taking a well-earned break.</p>
+      <details>
+        <summary>His story</summary>
+        <div class="det">
+          <p>How he came to run the shipping forum is a classic case of "if you want it done right, do it yourself".</p>
+          <ul>
+            <li><strong>The personal quest:</strong> like many early Tesla owners, he was frustrated by the lack of news about his own delivery. So he started digging into maritime data to find the ship carrying his car.</li>
+            <li><strong>The method:</strong> he cross-referenced VIN registrations, port schedules at Pier 80 in San Francisco, and satellite AIS tracking of car carriers.</li>
+            <li><strong>The name:</strong> legend has it his username reflects the miserable experience of waiting for a Tesla with no updates. By sharing what he found on TMC, he went from frustrated customer to the main source of information for thousands of others.</li>
+            <li><strong>Taking the helm:</strong> his tracking became so accurate, often beating Tesla's own sales advisers on delivery dates, that he was asked to lead and moderate the Shipping Movements threads.</li>
+          </ul>
+          <p><strong>What he gave the community</strong></p>
+          <ul>
+            <li><strong>The shipping spreadsheet:</strong> detailed tracking of every ship from Pier 80 to Zeebrugge or Oslo.</li>
+            <li><strong>Ship-spotting guides:</strong> he taught people to use the Panama Canal webcams to watch their cars pass through the locks.</li>
+            <li><strong>The support group:</strong> he turned the miserable wait into a shared hobby, where waiting became an investigative sport.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <div class="contact" id="feedback">
+    <h2>Suggest a link or send feedback</h2>
+    <p>Fill this in and tap the button. Your email app opens with the message ready to send.</p>
+    <form id="fb" class="fb" novalidate>
+      <div class="field">
+        <label for="fb-type">What's it about?</label>
+        <select id="fb-type">
+          <option>Suggest a new link</option>
+          <option>A link is broken or out of date</option>
+          <option>Correction to the guide or FAQs</option>
+          <option>General feedback</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fb-name">Your name or TMC username <span class="opt">optional</span></label>
+        <input id="fb-name" type="text" autocomplete="name">
+      </div>
+      <div class="field" id="fb-link-wrap">
+        <label for="fb-link">Link <span class="opt">optional</span></label>
+        <input id="fb-link" type="url" inputmode="url" placeholder="https://">
+      </div>
+      <div class="field">
+        <label for="fb-msg">Message</label>
+        <textarea id="fb-msg" rows="4" placeholder="What is it, and why is it useful?"></textarea>
+      </div>
+      <p class="err" id="fb-err" hidden>Add a message or a link before sending.</p>
+      <div class="actions">
+        <button type="submit">Open in my email app</button>
+        <button type="button" class="ghost" id="fb-copy">Copy message</button>
+      </div>
+      <p class="hint" id="fb-status">If no email app opens, tap <strong>Copy message</strong> and paste it into an email to <span class="mail" id="mail">fraser.mcnish@gmail.com</span>.</p>
+    </form>
+  </div>
+
+  <footer>Unofficial community page. Not affiliated with Tesla.</footer>
+</div>
+
+<script>
+(function () {
+  const q = document.getElementById('q');
+  const sections = [...document.querySelectorAll('#list section')];
+  const empty = document.getElementById('empty');
+  function update() {
+    const term = q.value.trim().toLowerCase();
+    let total = 0;
+    sections.forEach(s => {
+      const items = [...s.querySelectorAll('li')];
+      let shown = 0;
+      items.forEach(li => {
+        const a = li.querySelector('a');
+        const match = !term || li.textContent.toLowerCase().includes(term) || (a && a.href.toLowerCase().includes(term));
+        li.hidden = !match; if (match) shown++;
+      });
+      s.hidden = shown === 0;
+      s.querySelector('.count').textContent = shown + (shown === 1 ? ' link' : ' links');
+      total += shown;
+    });
+    empty.style.display = total ? 'none' : 'block';
+  }
+  q.addEventListener('input', update);
+  update();
+
+  const TO = 'fraser.mcnish@gmail.com';
+  const $ = id => document.getElementById(id);
+  const form = $('fb'), err = $('fb-err'), status = $('fb-status'), copyBtn = $('fb-copy');
+
+  function compose() {
+    const type = $('fb-type').value;
+    const name = $('fb-name').value.trim();
+    const link = $('fb-link').value.trim();
+    const msg = $('fb-msg').value.trim();
+    const subject = "Frizzy's Tesla Links: " + type;
+    const lines = [];
+    if (msg) lines.push(msg, '');
+    if (link) lines.push('Link: ' + link);
+    if (name) lines.push('From: ' + name);
+    return { subject, body: lines.join('\n').trim(), empty: !msg && !link };
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const m = compose();
+    err.hidden = !m.empty;
+    if (m.empty) { $('fb-msg').focus(); return; }
+    const href = 'mailto:' + TO + '?subject=' + encodeURIComponent(m.subject) + '&body=' + encodeURIComponent(m.body);
+    const a = document.createElement('a');
+    a.href = href; a.target = '_top'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+    status.innerHTML = 'Your email app should open with the message filled in. Nothing opened? Tap <strong>Copy message</strong> and paste it into an email to <span class="mail">' + TO + '</span>.';
+  });
+
+  copyBtn.addEventListener('click', () => {
+    const m = compose();
+    err.hidden = !m.empty;
+    if (m.empty) { $('fb-msg').focus(); return; }
+    const text = 'To: ' + TO + '\nSubject: ' + m.subject + '\n\n' + m.body;
+    const done = () => { copyBtn.textContent = 'Copied'; setTimeout(() => copyBtn.textContent = 'Copy message', 1800); };
+    const fallback = () => { $('fb-msg').select(); copyBtn.textContent = 'Copy failed – select and copy'; };
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+  });})();
+</script>
+
+</body>
+</html>
