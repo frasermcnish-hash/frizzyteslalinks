@@ -6,6 +6,28 @@ const { redis, configured, checkPin, clientKey, readBody } = require('./_lib');
 
 const str = (v, max) => String(v == null ? '' : v).replace(/[\u0000-\u0008\u000b-\u001f]/g, ' ').trim().slice(0, max);
 
+// Adds (or updates) one task on the McNisdash home dashboard's to-do list, which lives in the
+// same Redis database under "todos". The task never includes the visitor's message, only a count.
+async function notifyDashboard() {
+  const [got] = await redis([['GET', 'todos']]);
+  let list = [];
+  try { list = got.result ? JSON.parse(got.result) : []; } catch (e) { return; }
+  if (!Array.isArray(list)) return;
+  const open = list.find(t => t && t.src === 'ftl-feedback' && !t.done);
+  if (open) {
+    open.count = (Number(open.count) || 1) + 1;
+    open.text = 'Tesla Links: ' + open.count + ' new feedback messages';
+  } else {
+    if (list.length >= 100) return;
+    list.push({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      text: 'Tesla Links: 1 new feedback message',
+      done: false, urgent: false, src: 'ftl-feedback', count: 1,
+    });
+  }
+  await redis([['SET', 'todos', JSON.stringify(list)]]);
+}
+
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   if (!configured) return res.status(503).json({ error: 'Storage is not connected.' });
@@ -18,6 +40,7 @@ module.exports = async (req, res) => {
       const [count] = await redis([['INCR', key], ['EXPIRE', key, 3600]]);
       if (Number(count.result) > 5) return res.status(429).json({ error: 'You have sent a lot of messages. Try again in an hour.' });
       await redis([['LPUSH', 'ftl:feedback', JSON.stringify(item)], ['LTRIM', 'ftl:feedback', 0, 499]]);
+      try { await notifyDashboard(); } catch (e) { /* the feedback is saved either way */ }
       return res.status(201).json({ ok: true });
     }
     const auth = await checkPin(req);
