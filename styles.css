@@ -189,3 +189,12 @@ button:disabled { opacity: .6; cursor: progress; }
 .admin-link:focus-visible, .admin-pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .wrap { position: relative; }
 .admin-pill { position: absolute; top: 20px; right: 16px; z-index: 6; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--bg); background: var(--harbour); text-decoration: none; border-radius: 999px; padding: 7px 13px; }
+
+/* Collapsible card lists */
+details.fold { background: transparent; border: 0; border-radius: 0; margin-top: 16px; }
+details.fold > summary { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; font-weight: 600; }
+details.fold > summary::after { content: "Show"; margin-left: auto; font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--accent); }
+details.fold[open] > summary::after { content: "Hide"; }
+details.fold > summary:hover { border-color: var(--harbour); }
+.fold-n { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--muted); background: var(--chip); border-radius: 999px; padding: 2px 8px; }
+details.fold[open] > ul.fun { margin-top: 8px; }

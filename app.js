@@ -27,6 +27,12 @@
       '<span class="hits"></span></a></li>';
   }
 
+  // Card sections start collapsed. The label comes from the section's template, if it has one.
+  function foldLabel(s) {
+    const tpl = $('extra-' + s.id);
+    return (tpl && tpl.dataset.fold) || 'Show ' + s.links.length + ' links';
+  }
+
   function render(data) {
     if (!list || !data || !Array.isArray(data.sections)) return;
     linkIndex = {};
@@ -37,7 +43,9 @@
         '<h2>' + esc(s.title) + ' <span class="count"></span></h2>' +
         (s.blurb ? '<p>' + esc(s.blurb) + '</p>' : '') +
         '<div class="extra" data-for="' + esc(s.id) + '"></div>' +
-        '<ul class="' + (s.layout === 'cards' ? 'fun' : 'links') + '">' + items + '</ul></section>';
+        (s.layout === 'cards'
+          ? '<details class="fold"><summary><span class="fold-title">' + esc(foldLabel(s)) + '</span><span class="fold-n">' + s.links.length + '</span></summary><ul class="fun">' + items + '</ul></details>'
+          : '<ul class="links">' + items + '</ul>') + '</section>';
     }).join('');
     list.innerHTML = html;
     // Static extras (e.g. the Wait Club routine) slot into their section.
@@ -90,6 +98,10 @@
     if (!list) return;
     const term = q ? q.value.trim().toLowerCase() : '';
     let total = 0;
+    list.querySelectorAll('details.fold').forEach(d => {
+      if (term) { if (!d.dataset.searchOpen) { d.dataset.wasOpen = d.open ? '1' : ''; d.dataset.searchOpen = '1'; } d.open = true; }
+      else if (d.dataset.searchOpen) { d.open = d.dataset.wasOpen === '1'; delete d.dataset.searchOpen; }
+    });
     list.querySelectorAll('section').forEach(s => {
       let shown = 0;
       s.querySelectorAll('li').forEach(li => {
