@@ -185,22 +185,6 @@
    ]
   },
   {
-   "id": "extras",
-   "title": "Extras",
-   "blurb": "Getting ready for home charging.",
-   "layout": "rows",
-   "links": [
-    {
-     "id": "share-octopus-energy-great-thyme-51",
-     "code": "£100",
-     "title": "Octopus Energy referral",
-     "desc": "Want to share £100? Use this link when you switch",
-     "url": "https://share.octopus.energy/great-thyme-51",
-     "host": "octopus"
-    }
-   ]
-  },
-  {
    "id": "passtime",
    "title": "Ways to pass the time",
    "blurb": "Things to do while you wait.",
