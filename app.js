@@ -249,5 +249,76 @@
   // Show the "Edit links" button on devices that have unlocked the editor.
   try { if (localStorage.getItem('ftl-admin') === '1' && $('admin-pill')) $('admin-pill').hidden = false; } catch (e) {}
 
+  // ---------- Wait Club mood ticker ----------
+  const MOODS = [['Excited', '🤩'], ['Hopeful', '🤞'], ['Patient', '😌'], ['Anxious', '😬'], ['Frustrated', '😤'], ['Bored', '🥱']];
+  const moodEmoji = m => (MOODS.find(x => x[0] === m) || ['', '💬'])[1];
+  const track = $('mood-track');
+  function ago(ts) {
+    const m = Math.max(1, Math.round((Date.now() - ts) / 60000));
+    return m < 60 ? m + 'm ago' : Math.round(m / 60) + 'h ago';
+  }
+  function paintTicker(posts) {
+    if (!track) return;
+    track.classList.remove('run');
+    if (!posts.length) {
+      track.innerHTML = '<span class="mood-empty">No posts yet. Be the first to share how your wait is going.</span>';
+      return;
+    }
+    const one = posts.map(p => '<span class="mood-item"><span class="mood-emoji" aria-hidden="true">' + moodEmoji(p.mood) + '</span>' +
+      '<strong>' + esc(p.name) + '</strong> is feeling <em>' + esc(p.mood.toLowerCase()) + '</em>' +
+      (p.text ? '<span class="mood-text">“' + esc(p.text) + '”</span>' : '') +
+      '<span class="mood-ago">' + ago(p.ts) + '</span></span>').join('');
+    track.innerHTML = '<span class="mood-run">' + one + '</span><span class="mood-run" aria-hidden="true">' + one + '</span>';
+    requestAnimationFrame(() => {
+      const w = track.firstChild.getBoundingClientRect().width;
+      track.style.setProperty('--mood-dur', Math.max(18, w / 45) + 's');
+      track.classList.add('run');
+    });
+  }
+  function loadMoods() {
+    if (!track) return;
+    fetch('/api/moods').then(r => r.json()).then(d => paintTicker(d.posts || [])).catch(() => {
+      track.innerHTML = '<span class="mood-empty">The ticker could not load.</span>';
+    });
+  }
+  if (track) {
+    loadMoods();
+    setInterval(loadMoods, 60000);
+    const vp = $('mood-viewport');
+    vp.addEventListener('click', () => track.classList.toggle('paused'));
+    const opts = $('mood-options');
+    opts.innerHTML = MOODS.map(([m, e], i) =>
+      '<label class="mood-opt"><input type="radio" name="mood" value="' + m + '" id="mood-' + i + '"><span>' + e + ' ' + m + '</span></label>').join('');
+    const form = $('mood-form'), add = $('mood-add'), err = $('mood-err'), send = $('mood-send');
+    try { $('mood-name').value = localStorage.getItem('ftl-mood-name') || ''; } catch (e) {}
+    const toggle = open => { form.hidden = !open; add.setAttribute('aria-expanded', String(open)); add.textContent = open ? 'Close' : '+ Share'; if (open) ($('mood-name').value ? opts.querySelector('input') : $('mood-name')).focus(); };
+    add.addEventListener('click', () => toggle(form.hidden));
+    $('mood-cancel').addEventListener('click', () => toggle(false));
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const name = $('mood-name').value.trim();
+      const picked = form.querySelector('input[name="mood"]:checked');
+      const text = $('mood-text').value.trim();
+      const fail = msg => { err.textContent = msg; err.hidden = false; };
+      if (!name) return fail('Add your name.');
+      if (!picked) return fail('Pick how you feel.');
+      err.hidden = true; send.disabled = true; send.textContent = 'Posting…';
+      try {
+        const r = await fetch('/api/moods', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, mood: picked.value, text }) });
+        const d = await r.json().catch(() => ({}));
+        if (r.status !== 201) throw new Error(d.error || 'Your post could not be added.');
+        try { localStorage.setItem('ftl-mood-name', name); } catch (ex) {}
+        $('mood-text').value = ''; picked.checked = false;
+        toggle(false);
+        fetch('/api/moods').then(x => x.json()).then(dd => {
+          const posts = dd.posts || [];
+          if (!posts.some(p => p.id === d.post.id)) posts.unshift(d.post);
+          paintTicker(posts);
+        }).catch(() => paintTicker([d.post]));
+      } catch (ex) { fail(ex.message); }
+      finally { send.disabled = false; send.textContent = 'Post to the ticker'; }
+    });
+  }
+
   loadLinks();
 })();

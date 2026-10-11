@@ -38,6 +38,35 @@
     <a class="newhere" href="/guide"><strong>New to the wait?</strong><span>Start with the guide: how ship tracking works, when VINs appear, and the FAQs.</span><span class="go">Read the guide →</span></a>
   </header>
 
+  <section class="mood" id="mood" aria-label="How the Wait Club is feeling">
+    <div class="mood-bar">
+      <span class="mood-label">Wait Club<br>mood</span>
+      <div class="mood-viewport" id="mood-viewport"><div class="mood-track" id="mood-track"><span class="mood-empty">Loading…</span></div></div>
+      <button type="button" class="mood-add" id="mood-add" aria-expanded="false" aria-controls="mood-form">+ Share</button>
+    </div>
+    <form class="mood-form" id="mood-form" hidden novalidate>
+      <p class="mood-intro">How are you feeling about the wait today? Your post shows on the ticker for 12 hours.</p>
+      <div class="field">
+        <label for="mood-name">Your name</label>
+        <input id="mood-name" type="text" maxlength="30" autocomplete="nickname" placeholder="First name or TMC username">
+      </div>
+      <fieldset class="mood-pick">
+        <legend>How are you feeling?</legend>
+        <div class="mood-options" id="mood-options"></div>
+      </fieldset>
+      <div class="field">
+        <label for="mood-text">Anything to add? <span class="opt">optional, 140 characters</span></label>
+        <input id="mood-text" type="text" maxlength="140" placeholder="e.g. VIN just appeared, ship's past Singapore!">
+      </div>
+      <p class="err" id="mood-err" hidden></p>
+      <div class="actions">
+        <button type="submit" id="mood-send">Post to the ticker</button>
+        <button type="button" class="ghost" id="mood-cancel">Cancel</button>
+      </div>
+      <p class="hint">Keep it friendly. Posts can be removed by the page owner.</p>
+    </form>
+  </section>
+
   <div class="toolbar">
     <label for="q" class="eyebrow" style="color:var(--muted)">Find a link</label>
     <input id="q" class="search" type="search" placeholder="Try “ship”, “VIN” or “WhatsApp”" autocomplete="off">

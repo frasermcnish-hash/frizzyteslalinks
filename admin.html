@@ -78,6 +78,7 @@ body{margin:0}[hidden]{display:none!important}
     <p class="note">Signed in. <button type="button" class="ib" id="signout">Sign out on this device</button></p>
     <div class="tabs" role="tablist">
       <button type="button" role="tab" aria-selected="true" data-tab="links">Links</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="ticker">Ticker <span class="badge" id="tkcount" hidden></span></button>
       <button type="button" role="tab" aria-selected="false" data-tab="feedback">Feedback <span class="badge" id="fbcount" hidden></span></button>
     </div>
 
@@ -85,6 +86,11 @@ body{margin:0}[hidden]{display:none!important}
       <p class="note">Tap a link to edit it. Use the arrows to reorder. Changes go live when you press <strong>Save changes</strong>.</p>
       <div id="sections"></div>
       <button type="button" class="ib add" id="addsec">+ Add a section</button>
+    </section>
+
+    <section class="panel" id="tab-ticker" hidden>
+      <p class="note">Posts currently on the Wait Club mood ticker. Each one disappears on its own after 12 hours. Delete anything that shouldn't be there.</p>
+      <div id="tklist"></div>
     </section>
 
     <section class="panel" id="tab-feedback" hidden>
@@ -119,6 +125,7 @@ body{margin:0}[hidden]{display:none!important}
     try { sessionStorage.setItem('ftl-pin', PIN); localStorage.setItem('ftl-admin', '1'); } catch (e) {}
     $('pinform').hidden = true; $('app').hidden = false; $('savebar').hidden = false;
     renderFeedback((await r.json()).items);
+    loadTicker();
     const lr = await fetch('/api/links', { cache: 'no-store' });
     data = await lr.json();
     saved = JSON.stringify(data.sections);
@@ -142,6 +149,8 @@ body{margin:0}[hidden]{display:none!important}
     document.querySelectorAll('[data-tab]').forEach(x => x.setAttribute('aria-selected', String(x === b)));
     $('tab-links').hidden = b.dataset.tab !== 'links';
     $('tab-feedback').hidden = b.dataset.tab !== 'feedback';
+    $('tab-ticker').hidden = b.dataset.tab !== 'ticker';
+    if (b.dataset.tab === 'ticker') loadTicker();
     $('savebar').hidden = b.dataset.tab !== 'links';
   }));
 
@@ -261,6 +270,37 @@ body{margin:0}[hidden]{display:none!important}
     } finally { btn.textContent = 'Save changes'; }
   });
   window.addEventListener('beforeunload', e => { if (data && JSON.stringify(clean()) !== saved) { e.preventDefault(); e.returnValue = ''; } });
+
+  // ---------- Ticker ----------
+  const MOOD_EMOJI = { Excited: '🤩', Hopeful: '🤞', Patient: '😌', Anxious: '😬', Frustrated: '😤', Bored: '🥱' };
+  async function loadTicker() {
+    const box = $('tklist');
+    try {
+      const r = await fetch('/api/moods', { cache: 'no-store' });
+      renderTicker((await r.json()).posts || []);
+    } catch (e) { box.innerHTML = '<p class="note">The ticker could not load.</p>'; }
+  }
+  function renderTicker(posts) {
+    const c = $('tkcount'); c.textContent = posts.length; c.hidden = !posts.length;
+    const box = $('tklist');
+    if (!posts.length) { box.innerHTML = '<p class="note">Nothing on the ticker right now.</p>'; return; }
+    box.innerHTML = posts.map((p, i) => {
+      const when = new Date(p.ts).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      const left = Math.max(0, Math.round((p.ts + 12 * 3600000 - Date.now()) / 3600000));
+      return '<div class="fbi"><div class="type">' + (MOOD_EMOJI[p.mood] || '💬') + ' ' + esc(p.name) + ' is feeling ' + esc(String(p.mood).toLowerCase()) + '</div>' +
+        '<div class="meta"><span>' + when + '</span><span>' + (left ? 'about ' + left + 'h left' : 'expiring soon') + '</span></div>' +
+        (p.text ? '<p>' + esc(p.text) + '</p>' : '') +
+        '<button type="button" class="ib danger" data-tdel="' + i + '">Remove from ticker</button></div>';
+    }).join('');
+    box.onclick = async e => {
+      const b = e.target.closest('[data-tdel]'); if (!b) return;
+      if (b.dataset.confirm !== '1') { b.dataset.confirm = '1'; b.textContent = 'Tap again to remove'; return; }
+      const p = posts[+b.dataset.tdel];
+      b.disabled = true;
+      const r = await api('/api/moods', { method: 'DELETE', body: JSON.stringify({ id: p.id }) });
+      if (r.ok) { posts.splice(+b.dataset.tdel, 1); renderTicker(posts); } else { b.disabled = false; b.textContent = 'Could not remove. Try again'; }
+    };
+  }
 
   // ---------- Feedback ----------
   function renderFeedback(items) {
