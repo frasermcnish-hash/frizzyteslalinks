@@ -180,5 +180,8 @@
     });
   }
 
+  // Show the "Edit links" button on devices that have unlocked the editor.
+  try { if (localStorage.getItem('ftl-admin') === '1' && $('admin-pill')) $('admin-pill').hidden = false; } catch (e) {}
+
   loadLinks();
 })();

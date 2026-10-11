@@ -74,6 +74,7 @@ body{margin:0}[hidden]{display:none!important}
   </form>
 
   <div id="app" hidden>
+    <p class="note">Signed in. <button type="button" class="ib" id="signout">Sign out on this device</button></p>
     <div class="tabs" role="tablist">
       <button type="button" role="tab" aria-selected="true" data-tab="links">Links</button>
       <button type="button" role="tab" aria-selected="false" data-tab="feedback">Feedback <span class="badge" id="fbcount" hidden></span></button>
@@ -114,7 +115,7 @@ body{margin:0}[hidden]{display:none!important}
       const d = await r.json().catch(() => ({}));
       throw new Error(d.error || 'Could not unlock.');
     }
-    try { sessionStorage.setItem('ftl-pin', PIN); } catch (e) {}
+    try { sessionStorage.setItem('ftl-pin', PIN); localStorage.setItem('ftl-admin', '1'); } catch (e) {}
     $('pinform').hidden = true; $('app').hidden = false; $('savebar').hidden = false;
     renderFeedback((await r.json()).items);
     const lr = await fetch('/api/links', { cache: 'no-store' });
@@ -129,6 +130,11 @@ body{margin:0}[hidden]{display:none!important}
     try { await unlock(); } catch (ex) { $('pinerr').textContent = ex.message; $('pinerr').hidden = false; }
   });
   if (PIN) unlock().catch(() => { PIN = ''; try { sessionStorage.removeItem('ftl-pin'); } catch (e) {} });
+
+  $('signout').addEventListener('click', () => {
+    try { sessionStorage.removeItem('ftl-pin'); localStorage.removeItem('ftl-admin'); } catch (e) {}
+    location.href = '/';
+  });
 
   // ---------- Tabs ----------
   document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => {
