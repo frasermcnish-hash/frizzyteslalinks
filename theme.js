@@ -36,7 +36,8 @@
     var btn = document.createElement('button');
     btn.type = 'button'; btn.id = 'theme-toggle'; btn.className = 'theme-toggle';
     btn.innerHTML = ICON;
-    wrap.insertBefore(btn, wrap.firstChild);
+    var bar = document.getElementById('topbar');
+    if (bar) bar.appendChild(btn); else wrap.insertBefore(btn, wrap.firstChild);
     update(btn);
     btn.addEventListener('click', function () {
       var next = current() === 'dark' ? 'light' : 'dark';

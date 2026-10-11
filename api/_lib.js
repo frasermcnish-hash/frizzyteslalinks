@@ -7,7 +7,7 @@ const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_R
 const configured = Boolean(REDIS_URL && REDIS_TOKEN);
 
 // Links that appear outside the editable sections (guide page, routine checklist).
-const EXTRA_IDS = ['marinetraffic-com', 'tesla-com-en-gb-drive'];
+const EXTRA_IDS = ['marinetraffic-com', 'tesla-com-en-gb-drive', 'ts-la-fraser164326'];
 
 async function redis(commands) {
   const r = await fetch(REDIS_URL + '/pipeline', {
