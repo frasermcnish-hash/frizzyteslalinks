@@ -27,6 +27,11 @@
       '<span class="hits"></span></a></li>';
   }
 
+  // Small icons shown before some section headings.
+  const SECTION_ICONS = {
+    chats: '<svg class="sec-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M19 9h1a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-1v3l-4-3h-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+  };
+
   // Card sections start collapsed. The label comes from the section's template, if it has one.
   function foldLabel(s) {
     const tpl = $('extra-' + s.id);
@@ -40,7 +45,7 @@
       s.links.forEach(l => { linkIndex[l.id] = l; });
       const items = s.links.map(s.layout === 'cards' ? cardHTML : rowHTML).join('');
       return '<section id="' + esc(s.id) + '">' +
-        '<h2>' + esc(s.title) + ' <span class="count"></span></h2>' +
+        '<h2>' + (SECTION_ICONS[s.id] || '') + esc(s.title) + ' <span class="count"></span></h2>' +
         '<div class="fsec-body">' +
         (s.blurb ? '<p>' + esc(s.blurb) + '</p>' : '') +
         '<div class="extra" data-for="' + esc(s.id) + '"></div>' +

@@ -223,3 +223,6 @@ h2.fsec-head { margin: 0; display: block; }
 .contact.fsec h2.fsec-head { margin: 0; }
 .contact.fsec .fsec-body { display: grid; gap: 8px; padding-block: 12px 4px; }
 .contact.fsec .fsec-body[hidden] { display: none; }
+
+/* Section heading icons */
+.sec-icon { width: 20px; height: 20px; color: var(--accent); vertical-align: -3px; margin-right: 8px; flex: none; }
