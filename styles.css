@@ -9,6 +9,7 @@
   --accent-soft: #fbe7ea;
   --harbour: #17344f;
   --chip: #e2e9ef;
+  --beam: #e8a400;
   --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
   --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
@@ -16,13 +17,13 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0b141d; --surface: #13202c; --ink: #e7eef4; --muted: #93a4b4;
-    --line: #22344a; --accent: #ff4d5e; --accent-soft: #3a1820; --harbour: #8fb7da; --chip: #1c2d3d;
+    --line: #22344a; --accent: #ff4d5e; --accent-soft: #3a1820; --harbour: #8fb7da; --chip: #1c2d3d; --beam: #ffd34d;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0b141d; --surface: #13202c; --ink: #e7eef4; --muted: #93a4b4;
-  --line: #22344a; --accent: #ff4d5e; --accent-soft: #3a1820; --harbour: #8fb7da; --chip: #1c2d3d;
+  --line: #22344a; --accent: #ff4d5e; --accent-soft: #3a1820; --harbour: #8fb7da; --chip: #1c2d3d; --beam: #ffd34d;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -188,7 +189,7 @@ button:disabled { opacity: .6; cursor: progress; }
 .admin-link svg, .admin-pill svg { width: 13px; height: 13px; flex: none; }
 .admin-link:focus-visible, .admin-pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .wrap { position: relative; }
-.admin-pill { position: absolute; top: 20px; right: 16px; z-index: 6; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--bg); background: var(--harbour); text-decoration: none; border-radius: 999px; padding: 7px 13px; }
+.admin-pill { position: absolute; top: 20px; right: 72px; z-index: 6; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--bg); background: var(--harbour); text-decoration: none; border-radius: 999px; padding: 7px 13px; }
 
 /* Collapsible card lists */
 details.fold { background: transparent; border: 0; border-radius: 0; margin-top: 16px; }
@@ -226,3 +227,16 @@ h2.fsec-head { margin: 0; display: block; }
 
 /* Section heading icons */
 .sec-icon { width: 20px; height: 20px; color: var(--accent); vertical-align: -3px; margin-right: 8px; flex: none; }
+
+/* Light/dark toggle: a headlight that switches on for dark mode */
+.theme-toggle { position: absolute; top: 16px; right: 16px; z-index: 7; width: 46px; height: 40px; padding: 0; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; color: var(--muted); }
+.theme-toggle svg { width: 32px; height: 24px; overflow: visible; }
+.theme-toggle .lamp { fill: none; stroke: currentColor; transition: fill .2s ease, stroke .2s ease; }
+.theme-toggle .beams { stroke: currentColor; opacity: .35; transition: opacity .2s ease, stroke .2s ease; }
+.theme-toggle.on { color: var(--beam); border-color: var(--beam); box-shadow: 0 0 0 3px color-mix(in srgb, var(--beam) 18%, transparent); }
+.theme-toggle.on .lamp { fill: var(--beam); stroke: var(--beam); }
+.theme-toggle.on .beams { opacity: 1; filter: drop-shadow(0 0 3px var(--beam)); }
+.theme-toggle:hover { border-color: var(--harbour); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+header > .eyebrow, header > h1 { padding-right: 58px; }
+@media (prefers-reduced-motion: reduce) { .theme-toggle .lamp, .theme-toggle .beams { transition: none; } }
