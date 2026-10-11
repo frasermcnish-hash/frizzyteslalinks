@@ -217,3 +217,9 @@ h2.fsec-head { margin: 0; display: block; }
 #legends.fsec .fsec-body { display: grid; gap: 10px; }
 #legends.fsec .fsec-body[hidden] { display: none; }
 @media (prefers-reduced-motion: reduce) { .fsec-btn .chev { transition: none; } }
+
+/* Feedback folds like the other sections */
+.contact.fsec { display: block; border: 0; padding: 0; margin-top: 10px; }
+.contact.fsec h2.fsec-head { margin: 0; }
+.contact.fsec .fsec-body { display: grid; gap: 8px; padding-block: 12px 4px; }
+.contact.fsec .fsec-body[hidden] { display: none; }

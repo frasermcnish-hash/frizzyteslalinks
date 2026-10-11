@@ -123,8 +123,7 @@
     const sec = document.getElementById(a.getAttribute('href').slice(1));
     if (sec && sec.dataset.fold) setOpen(sec, true, true);
   });
-  const legends = $('legends');
-  if (legends && list) makeFoldable(legends);
+  ['legends', 'feedback'].forEach(id => { const el = $(id); if (el && list) makeFoldable(el); });
 
   async function loadLinks() {
     if (!list) return;
