@@ -9,6 +9,11 @@
 <meta property="og:description" content="Your survival kit for the Tesla Wait Club: trackers, ships, webcams, chats and FAQs.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#17344f">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Tesla Links">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317344f'/%3E%3Cpath d='M6 19h20l-3 6H9z' fill='%23fff'/%3E%3Crect x='11' y='12' width='10' height='6' fill='%23c8102e'/%3E%3C/svg%3E">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,7 +27,11 @@
     <div class="eyebrow">Tesla Wait Club · UK</div>
     <h1>Frizzy's Tesla Links</h1>
     <p class="lede">Your survival kit for the wait. Don't just refresh the app — every tracker, chat and resource worth having is here, grouped so you can find it fast.</p>
-    <div class="bookmark">★ <span>Bookmark this page so it's one tap away. On a phone, use <kbd>Share</kbd> → <kbd>Add to Home Screen</kbd>.</span></div>
+    <div class="actbar">
+      <button type="button" class="act" id="btn-install"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="label">Add to Home Screen</span></button>
+      <button type="button" class="act" id="btn-share" data-url="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="label">Share this page</span></button>
+    </div>
+    <p class="howto" id="howto" hidden></p>
     <a class="newhere" href="/guide"><strong>New to the wait?</strong><span>Start with the guide: how ship tracking works, when VINs appear, and the FAQs.</span><span class="go">Read the guide →</span></a>
   </header>
 
@@ -289,5 +298,6 @@
   });})();
 </script>
 
+<script src="/share.js" defer></script>
 </body>
 </html>

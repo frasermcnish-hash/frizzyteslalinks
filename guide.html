@@ -9,6 +9,11 @@
 <meta property="og:description" content="How ship tracking works, when your VIN appears, and the FAQs.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#17344f">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Tesla Links">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317344f'/%3E%3Cpath d='M6 19h20l-3 6H9z' fill='%23fff'/%3E%3Crect x='11' y='12' width='10' height='6' fill='%23c8102e'/%3E%3C/svg%3E">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,6 +28,10 @@
     <div class="eyebrow">Tesla Wait Club · New here</div>
     <h1>The Wait Club Guide</h1>
     <p class="lede">Ordered a Tesla and wondering where it is? Here's how the community tracks cars from factory to Southampton, and answers to the questions everyone asks.</p>
+    <div class="actbar">
+      <button type="button" class="act" id="btn-share" data-url="/guide" data-text="New to the Tesla wait? Start with this guide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="label">Share this guide</span></button>
+    </div>
+    <p class="howto" id="howto" hidden></p>
     <nav class="chips" aria-label="Sections">
       <a href="#guide">How tracking works</a>
       <a href="#faqs">FAQs</a>
@@ -158,5 +167,6 @@
 
   <footer>Unofficial community page. Not affiliated with Tesla.</footer>
 </div>
+<script src="/share.js" defer></script>
 </body>
 </html>
