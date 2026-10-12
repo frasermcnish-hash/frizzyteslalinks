@@ -302,3 +302,14 @@ header > .eyebrow, header > h1 { padding-right: 58px; }
   .order-btn svg { display: none; }
   .topbar .theme-toggle { width: 42px; }
 }
+
+/* Site stats */
+.stats { margin-top: 26px; }
+.stats .sub { margin: 0 0 8px; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 0; }
+@media (max-width: 520px) { .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
+.stat dt { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.stat dd { margin: 0; display: grid; gap: 1px; }
+.stat-n { font-family: var(--font-display); font-weight: 700; font-size: 1.9rem; line-height: 1; color: var(--harbour); font-variant-numeric: tabular-nums; }
+.stat-when { font-size: 12px; color: var(--muted); }

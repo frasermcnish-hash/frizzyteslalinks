@@ -329,5 +329,17 @@
     });
   }
 
+  // ---------- Site stats ----------
+  try { navigator.sendBeacon ? navigator.sendBeacon('/api/stats') : fetch('/api/stats', { method: 'POST', keepalive: true }); } catch (e) {}
+  if ($('stats')) {
+    fetch('/api/stats').then(r => r.json()).then(d => {
+      const n = v => Number(v || 0).toLocaleString('en-GB');
+      $('st-v-total').textContent = n(d.visitors && d.visitors.total);
+      $('st-v-week').textContent = n(d.visitors && d.visitors.week);
+      $('st-c-total').textContent = n(d.clicks && d.clicks.total);
+      $('st-c-week').textContent = n(d.clicks && d.clicks.week);
+    }).catch(() => { $('stats').hidden = true; });
+  }
+
   loadLinks();
 })();
