@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Link Collector · Frizzy's Tesla Links</title>
+<meta name="description" content="A one-tap bookmark that gathers the links posted in a forum thread as you read it.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#17344f">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317344f'/%3E%3Cpath d='M6 19h20l-3 6H9z' fill='%23fff'/%3E%3Crect x='11' y='12' width='10' height='6' fill='%23c8102e'/%3E%3C/svg%3E">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/styles.css">
+<script src="/theme.js"></script>
+<style>
+  .install { display: grid; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+  .install .act { flex: none; justify-self: start; }
+  .install .cstat { margin: 0; font-size: 13.5px; color: var(--muted); min-height: 1.2em; }
+  .install .desk { margin: 0; font-size: 13.5px; color: var(--muted); }
+  .bm { font-family: var(--font-mono); font-size: 12px; color: var(--surface); background: var(--harbour); border-radius: 999px; padding: 5px 11px; text-decoration: none; }
+  .det ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+  .det code { font-family: var(--font-mono); font-size: 12px; background: var(--chip); border-radius: 4px; padding: 1px 5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="/">← All links</a>
+    <div class="eyebrow">Tesla Wait Club · Tools</div>
+    <h1>Link Collector</h1>
+    <p class="lede">A bookmark you tap on each page of a forum thread as you read it. It gathers the links people posted into one list you can export. Nothing leaves your phone.</p>
+  </header>
+
+  <section class="guide">
+    <div class="install">
+      <button type="button" class="act" id="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Copy bookmark code</span></button>
+      <p class="cstat" id="status" aria-live="polite"></p>
+      <p class="desk">On a computer, drag this to your bookmarks bar instead: <a class="bm" id="drag" href="#">Collect links</a></p>
+    </div>
+  </section>
+
+  <section class="guide">
+    <div class="eyebrow">Set up once</div>
+    <h2 class="guide-title">Add the bookmark</h2>
+    <details open>
+      <summary>iPhone (Safari)</summary>
+      <div class="det"><ol>
+        <li>Tap <strong>Copy bookmark code</strong> above.</li>
+        <li>Bookmark this page: Share → <strong>Add Bookmark</strong>, name it <strong>Collect links</strong>, save to Favourites.</li>
+        <li>Open Bookmarks, tap <strong>Edit</strong>, tap <strong>Collect links</strong>, clear the address and paste.</li>
+      </ol></div>
+    </details>
+    <details>
+      <summary>Android (Chrome)</summary>
+      <div class="det"><ol>
+        <li>Tap <strong>Copy bookmark code</strong>, then bookmark this page as <strong>Collect links</strong>.</li>
+        <li>Edit that bookmark and paste over its URL.</li>
+        <li>To use it, type <code>Collect links</code> in the address bar on a forum page and tap the bookmark suggestion.</li>
+      </ol></div>
+    </details>
+  </section>
+
+  <section class="guide">
+    <div class="eyebrow">Every time</div>
+    <h2 class="guide-title">Collect as you read</h2>
+    <details open>
+      <summary>How it works</summary>
+      <div class="det">
+        <ol>
+          <li>Open the thread page you want to start from, such as the <a href="https://teslamotorsclub.com/tmc/threads/2025-shipping-movements.319517/latest" target="_blank" rel="noopener">TMC Shipping Movements thread</a>.</li>
+          <li>Tap the bookmark. A panel shows the links posted on that page, with who posted them.</li>
+          <li>Tap <strong>Next page →</strong>, then tap the bookmark again. Repeat as far as you like.</li>
+          <li>Tap <strong>CSV</strong> or <strong>Copy</strong> whenever you want the list.</li>
+        </ol>
+      </div>
+    </details>
+    <details>
+      <summary>Good to know</summary>
+      <div class="det">
+        <p>Only links inside posts are collected, not the forum's menus, member names or attachments. Links in quotes are credited to the original poster where possible, and tapping the same page twice won't create duplicates.</p>
+        <p>The list is kept in your browser on the forum's site, so it builds up across pages and days. Private browsing or clearing site data wipes it, so export as you go.</p>
+      </div>
+    </details>
+  </section>
+
+  <footer><span>Unofficial community page. Not affiliated with Tesla.</span></footer>
+</div>
+<script>
+(async () => {
+  const status = document.getElementById('status');
+  const drag = document.getElementById('drag');
+  let bookmarklet = '';
+  try {
+    const src = await (await fetch('/tools/link-collector.js', { cache: 'no-store' })).text();
+    const code = src.split('\n').filter(l => !/^\s*\/\//.test(l))
+      .map(l => l.replace(/\s+\/\/ original posts.*$/, '').trim()).filter(Boolean).join('\n');
+    bookmarklet = 'javascript:' + encodeURIComponent(code);
+    drag.href = bookmarklet;
+  } catch (e) { status.textContent = "Couldn't load the collector. Refresh and try again."; }
+
+  drag.onclick = e => { e.preventDefault(); status.textContent = 'Drag it to your bookmarks bar rather than clicking it.'; };
+  document.getElementById('copy').onclick = async () => {
+    if (!bookmarklet) return;
+    try { await navigator.clipboard.writeText(bookmarklet); }
+    catch (e) {
+      const ta = document.createElement('textarea'); ta.value = bookmarklet; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy'); ta.remove();
+    }
+    status.textContent = 'Copied. Now follow the steps below.';
+  };
+})();
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

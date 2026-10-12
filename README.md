@@ -6,6 +6,7 @@ Your survival kit for the Tesla Wait Club: https://frizzyteslalinks.vercel.app
 - `/` (`index.html`): the links page. Link sections load from `/api/links`.
 - `/guide` (`guide.html`): the new-visitor guide and FAQs.
 - `/admin` (`admin.html`): PIN-protected editor for links, plus messages sent from the feedback form.
+- `/collector` (`collector.html`): installs the Link Collector bookmark, which gathers links posted in a forum thread as you read it. Script: `tools/link-collector.js`. Not linked from the home page.
 
 ## How it works
 - `data/links.json` is the starting list of links. Once you save in `/admin`, the list lives in Upstash Redis (`ftl:links`) and this file is only a fallback.
