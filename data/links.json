@@ -37,6 +37,14 @@
      "desc": "Tesla's official parts catalogue",
      "url": "https://parts.tesla.com",
      "host": "tesla"
+    },
+    {
+     "id": "tesla-com-en-gb-support-delivery-day",
+     "code": "DAY",
+     "title": "Tesla Delivery Day guide",
+     "desc": "Tesla's UK guide to preparing for handover",
+     "url": "https://www.tesla.com/en_gb/support/delivery-day",
+     "host": "tesla"
     }
    ]
   },
@@ -149,6 +157,46 @@
      "desc": "For when the car's arrived · 131 members",
      "url": "https://chat.whatsapp.com/KtH34x4LjXh5ciW8xcKKoq?mode=gi_t",
      "host": "whatsapp"
+    },
+    {
+     "id": "teslaowners-uk",
+     "code": "TOUK",
+     "title": "Tesla Owners UK",
+     "desc": "The official UK owners club: events, meet-ups and advice",
+     "url": "https://teslaowners.uk/",
+     "host": "teslaowners"
+    }
+   ]
+  },
+  {
+   "id": "charging",
+   "title": "Charging at home & away",
+   "blurb": "Superchargers, home tariffs and grants.",
+   "layout": "rows",
+   "links": [
+    {
+     "id": "zapmap-com-charge-points-public-charging-point-networks-tesla-network",
+     "code": "ZAP",
+     "title": "Zapmap: Tesla Superchargers",
+     "desc": "UK Supercharger sites, prices and which are open to all EVs",
+     "url": "https://www.zapmap.com/charge-points/public-charging-point-networks/tesla-network/",
+     "host": "zapmap"
+    },
+    {
+     "id": "electrifying-com-best-ev-tariffs",
+     "code": "TARIFF",
+     "title": "Best EV home tariffs",
+     "desc": "Electrifying.com comparison of UK home charging tariffs",
+     "url": "https://electrifying.com/blog/knowledge-hub/best-ev-electricity-tariffs-the-top-energy-tariffs-for-your-electric-car",
+     "host": "electrifying"
+    },
+    {
+     "id": "gov-uk-ev-chargepoint-grants",
+     "code": "GRANT",
+     "title": "EV chargepoint grant",
+     "desc": "Up to £500 towards a home charger if you rent or own a flat",
+     "url": "https://www.gov.uk/government/collections/government-grants-for-low-emission-vehicles",
+     "host": "gov.uk"
     }
    ]
   },
@@ -181,6 +229,30 @@
      "desc": "iPhone app tracking new Supercharger sites",
      "url": "https://apps.apple.com/app/id1056496235",
      "host": "app store"
+    },
+    {
+     "id": "notateslaapp-com-software-updates",
+     "code": "OTA",
+     "title": "Software update notes",
+     "desc": "What each Tesla software update brings",
+     "url": "https://www.notateslaapp.com/software-updates/",
+     "host": "notateslaapp"
+    },
+    {
+     "id": "teslafi-com",
+     "code": "LOG",
+     "title": "TeslaFi",
+     "desc": "Logs every drive and charge. Paid after a 14-day free trial",
+     "url": "https://www.teslafi.com/",
+     "host": "teslafi"
+    },
+    {
+     "id": "github-com-teslamate-org-teslamate",
+     "code": "MATE",
+     "title": "TeslaMate",
+     "desc": "Free, open-source data logger you run yourself",
+     "url": "https://github.com/teslamate-org/teslamate",
+     "host": "github"
     }
    ]
   },

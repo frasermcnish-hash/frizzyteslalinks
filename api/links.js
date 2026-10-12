@@ -2,6 +2,25 @@
 // GET /api/links                   -> { sections: [...], updated }
 // PUT /api/links (x-admin-pin)     -> saves a new list, returns it
 const { redis, configured, getLinks, slugFromUrl, checkPin, readBody } = require('./_lib');
+const MIGRATIONS = require('./_migrations');
+
+// Applies any one-time changes to the saved list that haven't run yet.
+async function migrate() {
+  if (!configured) return;
+  for (const m of MIGRATIONS) {
+    const [claim] = await redis([['SET', 'ftl:mig:' + m.id, String(Date.now()), 'NX']]);
+    if (claim.result !== 'OK') continue;
+    const [got] = await redis([['GET', 'ftl:links']]);
+    if (!got.result) continue; // nothing saved yet: the default file already has the change
+    try {
+      const data = m.apply(JSON.parse(got.result));
+      data.updated = new Date().toISOString();
+      await redis([['SET', 'ftl:links', JSON.stringify(data)]]);
+    } catch (e) {
+      await redis([['DEL', 'ftl:mig:' + m.id]]);
+    }
+  }
+}
 
 const str = (v, max) => String(v == null ? '' : v).replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, max);
 
@@ -47,6 +66,7 @@ function clean(input) {
 module.exports = async (req, res) => {
   try {
     if (req.method === 'GET') {
+      try { await migrate(); } catch (e) { /* show the links regardless */ }
       const data = await getLinks();
       res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=60');
       return res.status(200).json(data);
