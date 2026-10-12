@@ -264,7 +264,7 @@
   const track = $('mood-track');
   function ago(ts) {
     const m = Math.max(1, Math.round((Date.now() - ts) / 60000));
-    return m < 60 ? m + 'm ago' : Math.round(m / 60) + 'h ago';
+    return m < 60 ? m + 'm ago' : m < 1440 ? Math.round(m / 60) + 'h ago' : Math.round(m / 1440) + 'd ago';
   }
   function paintTicker(posts) {
     if (!track) return;
@@ -327,6 +327,25 @@
       } catch (ex) { fail(ex.message); }
       finally { send.disabled = false; send.textContent = 'Post to the ticker'; }
     });
+  }
+
+  // ---------- Tesla news ticker ----------
+  const news = $('news'), newsTrack = $('news-track');
+  if (news && newsTrack) {
+    fetch('/api/news').then(r => r.json()).then(d => {
+      const items = (d.items || []).filter(i => /^https:\/\//.test(i.link));
+      if (!items.length) return;
+      const one = items.map(i => '<a class="news-item" href="' + esc(i.link) + '" target="_blank" rel="noopener">' +
+        '<span class="news-src">' + esc(i.source) + '</span>' + esc(i.title) +
+        (i.ts ? '<span class="news-ago">' + ago(i.ts) + '</span>' : '') + '</a>').join('');
+      newsTrack.innerHTML = '<span class="news-run">' + one + '</span><span class="news-run" aria-hidden="true">' + one.replace(/<a /g, '<a tabindex="-1" ') + '</span>';
+      news.hidden = false;
+      requestAnimationFrame(() => {
+        const w = newsTrack.firstChild.getBoundingClientRect().width;
+        newsTrack.style.setProperty('--news-dur', Math.max(25, w / 50) + 's');
+        newsTrack.classList.add('run');
+      });
+    }).catch(() => {});
   }
 
   // ---------- Site stats ----------
