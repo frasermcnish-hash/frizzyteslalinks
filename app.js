@@ -354,6 +354,7 @@
   if ($('stats')) {
     fetch('/api/stats').then(r => r.json()).then(d => {
       const n = v => Number(v || 0).toLocaleString('en-GB');
+      $('st-v-today').textContent = n(d.visitors && d.visitors.today);
       $('st-v-total').textContent = n(d.visitors && d.visitors.total);
       $('st-v-week').textContent = n(d.visitors && d.visitors.week);
       $('st-c-total').textContent = n(d.clicks && d.clicks.total);

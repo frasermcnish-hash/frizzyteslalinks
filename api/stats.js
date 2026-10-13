@@ -1,5 +1,5 @@
 // Site stats for the bottom of the links page.
-// GET  /api/stats  -> { visitors: {total, week}, clicks: {total, week}, since }
+// GET  /api/stats  -> { visitors: {total, week, today}, clicks: {total, week}, since }
 // POST /api/stats  -> records a visit (each visitor counts once per day)
 // Visitors are counted the same way as Vercel Web Analytics: unique visitors per day, added up.
 const { redis, configured, clientKey, londonDay } = require('./_lib');
@@ -9,7 +9,7 @@ const BASELINE_VISITORS = { '2026-10-11': 31, '2026-10-12': 49 };
 const SINCE = '2026-10-11';
 
 module.exports = async (req, res) => {
-  if (!configured) return res.status(200).json({ visitors: { total: 0, week: 0 }, clicks: { total: 0, week: 0 }, since: SINCE });
+  if (!configured) return res.status(200).json({ visitors: { total: 0, week: 0, today: 0 }, clicks: { total: 0, week: 0 }, since: SINCE });
   try {
     if (req.method === 'POST') {
       const day = londonDay(0);
@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
 
     const perDay = toObj(out[0].result);
     for (const d in BASELINE_VISITORS) perDay[d] = (perDay[d] || 0) + BASELINE_VISITORS[d];
-    const visitors = { total: sum(perDay), week: week.reduce((n, d) => n + (perDay[d] || 0), 0) };
+    const visitors = { total: sum(perDay), week: week.reduce((n, d) => n + (perDay[d] || 0), 0), today: perDay[week[0]] || 0 };
     const clicks = { total: sum(toObj(out[1].result)), week: out.slice(2).reduce((n, r) => n + sum(toObj(r.result)), 0) };
 
     res.setHeader('Cache-Control', 'public, s-maxage=120, stale-while-revalidate=600');
