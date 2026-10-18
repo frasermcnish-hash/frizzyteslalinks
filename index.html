@@ -195,6 +195,25 @@
     </dl>
   </section>
 
+  <button type="button" class="ships-tab" id="ships-tab" aria-controls="ships-drawer" aria-expanded="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15h18l-2.5 5h-13z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 15v-4h12v4M9 11V7h6v4M12 7V4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Ships</span>
+  </button>
+  <div class="ships-scrim" id="ships-scrim" hidden></div>
+  <aside class="ships-drawer" id="ships-drawer" aria-label="Live Tesla ship positions" aria-hidden="true">
+    <div class="ships-head">
+      <div>
+        <strong>Live ship positions</strong>
+        <span>From Tesla Ships by bluemanos</span>
+      </div>
+      <div class="ships-actions">
+        <a data-id="tesla-propl-eu" href="https://tesla.propl.eu/" target="_blank" rel="noopener">Open full site ↗</a>
+        <button type="button" id="ships-close" aria-label="Close ship positions">✕</button>
+      </div>
+    </div>
+    <div class="ships-body" id="ships-body"><p class="ships-msg">Loading the ship map…</p></div>
+  </aside>
+
   <footer><span>Unofficial community page. Not affiliated with Tesla.</span><a class="admin-link" href="/admin"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>Admin</a></footer>
 </div>
 <script src="/share.js" defer></script>
