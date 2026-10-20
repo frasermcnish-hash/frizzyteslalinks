@@ -57,6 +57,43 @@ body{margin:0}[hidden]{display:none!important}
 .fbi a { color: var(--accent); overflow-wrap: anywhere; font-size: 14px; }
 .fbi .ib { justify-self: start; }
 .note { color: var(--muted); font-size: 13.5px; margin: 0; }
+
+:root { --good: #1d7a47; --good-soft: #e3f3ea; --warn: #a76200; --warn-soft: #fbf0dc; --bad: #c8102e; --bad-soft: #fbe7ea; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --good: #5fd08f; --good-soft: #143425; --warn: #f2b14c; --warn-soft: #3a2a10; --bad: #ff5d6c; --bad-soft: #3a1820; } }
+:root[data-theme="dark"] { --good: #5fd08f; --good-soft: #143425; --warn: #f2b14c; --warn-soft: #3a2a10; --bad: #ff5d6c; --bad-soft: #3a1820; }
+.mi-status { display: grid; gap: 4px; padding: 16px; border-radius: 12px; border: 1px solid currentColor; }
+.mi-status.good { color: var(--good); background: var(--good-soft); }
+.mi-status.warn { color: var(--warn); background: var(--warn-soft); }
+.mi-status.bad { color: var(--bad); background: var(--bad-soft); }
+.mi-status .pill { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.mi-status strong { font-family: var(--font-display); font-size: 1.9rem; line-height: 1.05; text-transform: uppercase; }
+.mi-status p { margin: 0; color: var(--ink); font-size: 14px; }
+.mi-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+@media (min-width: 560px) { .mi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.mi-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
+.mi-tile span { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.mi-tile b { font-family: var(--font-display); font-size: 1.6rem; line-height: 1.05; color: var(--harbour); font-variant-numeric: tabular-nums; }
+.mi-tile b.good { color: var(--good); } .mi-tile b.bad { color: var(--bad); }
+.mi-tile small { font-size: 12px; color: var(--muted); }
+.mi-chart { margin-top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 8px 4px; }
+.mi-chart svg { display: block; width: 100%; height: auto; }
+.mi-chart .grid { stroke: var(--line); stroke-width: 1; }
+.mi-chart .axis { fill: var(--muted); font-family: var(--font-mono); font-size: 17px; }
+.mi-chart .allow { stroke: var(--muted); stroke-width: 2; stroke-dasharray: 2 4; fill: none; }
+.mi-chart .actual { stroke: var(--harbour); stroke-width: 2.5; fill: none; }
+.mi-chart .proj { stroke: var(--harbour); stroke-width: 2; stroke-dasharray: 6 5; fill: none; opacity: .7; }
+.mi-chart .dot { fill: var(--harbour); }
+.mi-chart .limit { stroke: var(--bad); stroke-width: 1.5; }
+.mi-chart .limit-t { fill: var(--bad); font-family: var(--font-mono); font-size: 16px; }
+.mi-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 4px 6px 6px; font-size: 12px; color: var(--muted); }
+.mi-legend i { display: inline-block; width: 18px; height: 0; border-top: 2.5px solid var(--harbour); vertical-align: middle; margin-right: 5px; }
+.mi-legend i.p { border-top: 2px dashed var(--harbour); } .mi-legend i.a { border-top: 2px dotted var(--muted); }
+.mi-add, .mi-hist { margin-top: 14px; display: grid; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+.mi-add h3, .mi-hist h3 { margin: 0; font-size: 14px; }
+.mi-row { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14px; font-variant-numeric: tabular-nums; }
+.mi-row:first-child { border-top: 0; }
+.mi-row .gain { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.mi-note { font-size: 12.5px; color: var(--muted); margin: 8px 0 0; }
 </style>
 </head>
 <body>
@@ -79,6 +116,7 @@ body{margin:0}[hidden]{display:none!important}
     <div class="tabs" role="tablist">
       <button type="button" role="tab" aria-selected="true" data-tab="links">Links</button>
       <button type="button" role="tab" aria-selected="false" data-tab="ticker">Ticker <span class="badge" id="tkcount" hidden></span></button>
+      <button type="button" role="tab" aria-selected="false" data-tab="mileage">Mileage</button>
       <button type="button" role="tab" aria-selected="false" data-tab="feedback">Feedback <span class="badge" id="fbcount" hidden></span></button>
     </div>
 
@@ -91,6 +129,23 @@ body{margin:0}[hidden]{display:none!important}
     <section class="panel" id="tab-ticker" hidden>
       <p class="note">Posts currently on the Wait Club mood ticker. Each one disappears on its own after 12 hours. Delete anything that shouldn't be there.</p>
       <div id="tklist"></div>
+    </section>
+
+    <section class="panel" id="tab-mileage" hidden>
+      <div id="mi-dash"><p class="note">Loading your mileage…</p></div>
+      <form class="mi-add" id="mi-form" novalidate>
+        <h3>Add a reading</h3>
+        <div class="row2">
+          <div class="f"><label for="mi-date">Date</label><input id="mi-date" type="date" min="2026-05-26"></div>
+          <div class="f"><label for="mi-miles">Odometer (miles)</label><input id="mi-miles" type="number" inputmode="numeric" min="0" step="1" placeholder="e.g. 5120"></div>
+        </div>
+        <p class="err" id="mi-err" hidden></p>
+        <button type="submit" id="mi-save">Add reading</button>
+      </form>
+      <div class="mi-hist">
+        <h3>Readings</h3>
+        <div id="mi-list"></div>
+      </div>
     </section>
 
     <section class="panel" id="tab-feedback" hidden>
@@ -151,6 +206,8 @@ body{margin:0}[hidden]{display:none!important}
     $('tab-feedback').hidden = b.dataset.tab !== 'feedback';
     $('tab-ticker').hidden = b.dataset.tab !== 'ticker';
     if (b.dataset.tab === 'ticker') loadTicker();
+    $('tab-mileage').hidden = b.dataset.tab !== 'mileage';
+    if (b.dataset.tab === 'mileage') loadMileage();
     $('savebar').hidden = b.dataset.tab !== 'links';
   }));
 
@@ -301,6 +358,133 @@ body{margin:0}[hidden]{display:none!important}
       if (r.ok) { posts.splice(+b.dataset.tdel, 1); renderTicker(posts); } else { b.disabled = false; b.textContent = 'Could not remove. Try again'; }
     };
   }
+
+  // ---------- Lease mileage tracker ----------
+  const DAY = 86400000;
+  const dnum = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / DAY;
+  const todayStr = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London' }).format(new Date());
+  const nf = n => Math.round(n).toLocaleString('en-GB');
+  const fd = s => new Date(s + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  // Pure calculation, so it can be checked on its own.
+  function mileageStats(lease, readings) {
+    const start = dnum(lease.start), end = dnum(lease.end), total = end - start;
+    const pts = [{ date: lease.start, miles: lease.startMiles }].concat(readings);
+    const last = pts[pts.length - 1];
+    const elapsed = Math.max(1, dnum(last.date) - start);
+    const used = last.miles - lease.startMiles;
+    const allowPerDay = lease.limit / total;
+    const allowedToDate = allowPerDay * elapsed;
+    // Current trend: miles per day over roughly the last 90 days (at least 14 days of history).
+    let base = pts[0];
+    for (let i = pts.length - 2; i >= 0; i--) {
+      base = pts[i];
+      const span = dnum(last.date) - dnum(pts[i].date);
+      if (span >= 90) break;
+      if (span >= 14 && i > 0 && dnum(last.date) - dnum(pts[i - 1].date) > 120) break;
+    }
+    const trendDays = Math.max(1, dnum(last.date) - dnum(base.date));
+    const trendRate = (last.miles - base.miles) / trendDays;
+    const avgRate = used / elapsed;
+    const daysLeft = Math.max(0, end - dnum(last.date));
+    const projected = used + trendRate * daysLeft;
+    const projectedAvg = used + avgRate * daysLeft;
+    const remaining = lease.limit - used;
+    return { total, elapsed, used, allowedToDate, diff: used - allowedToDate, trendRate, trendFrom: base.date, avgRate, allowPerDay,
+      projected, projectedAvg, daysLeft, remaining, budgetPerDay: daysLeft ? remaining / daysLeft : 0, last, pts };
+  }
+
+  function mileageChart(lease, s) {
+    const W = 640, H = 300, L = 58, R = 16, T = 22, B = 34;
+    const start = dnum(lease.start);
+    const ymax = Math.ceil(Math.max(lease.limit * 1.1, s.projected * 1.05) / 10000) * 10000;
+    const x = d => L + (d - start) / s.total * (W - L - R);
+    const y = m => T + (1 - m / ymax) * (H - T - B);
+    let g = '';
+    for (let m = 0; m <= ymax; m += 10000) g += '<line class="grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + y(m) + '" y2="' + y(m) + '"/><text class="axis" x="' + (L - 6) + '" y="' + (y(m) + 6) + '" text-anchor="end">' + (m / 1000) + 'k</text>';
+    for (let yr = 0; yr <= 4; yr++) {
+      const d = dnum((+lease.start.slice(0, 4) + yr) + lease.start.slice(4));
+      g += '<text class="axis" x="' + x(d) + '" y="' + (H - 10) + '" text-anchor="' + (yr === 0 ? 'start' : yr === 4 ? 'end' : 'middle') + '">' + (yr === 0 ? 'Start' : 'Year ' + yr) + '</text>';
+    }
+    const end = dnum(lease.end);
+    g += '<line class="limit" x1="' + L + '" x2="' + (W - R) + '" y1="' + y(lease.limit) + '" y2="' + y(lease.limit) + '"/><text class="limit-t" x="' + (L + 4) + '" y="' + (y(lease.limit) - 7) + '">' + nf(lease.limit) + ' limit</text>';
+    g += '<line class="allow" x1="' + x(start) + '" y1="' + y(0) + '" x2="' + x(end) + '" y2="' + y(lease.limit) + '"/>';
+    const P = s.pts.map(p => x(dnum(p.date)).toFixed(1) + ',' + y(p.miles - lease.startMiles).toFixed(1));
+    g += '<polyline class="actual" points="' + P.join(' ') + '"/>';
+    g += '<line class="proj" x1="' + x(dnum(s.last.date)) + '" y1="' + y(s.used) + '" x2="' + x(end) + '" y2="' + y(s.projected) + '"/>';
+    s.pts.slice(1).forEach(p => { g += '<circle class="dot" cx="' + x(dnum(p.date)) + '" cy="' + y(p.miles - lease.startMiles) + '" r="3.5"/>'; });
+    return '<div class="mi-chart"><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Miles driven against the lease allowance">' + g + '</svg>' +
+      '<div class="mi-legend"><span><i></i>Your miles</span><span><i class="p"></i>Current trend</span><span><i class="a"></i>Allowance pace</span></div></div>';
+  }
+
+  function renderMileage(d) {
+    const lease = d.lease, list = d.readings;
+    const box = $('mi-dash');
+    if (!list.length) { box.innerHTML = '<p class="note">Add your first reading below to see how you are doing.</p>'; }
+    else {
+      const s = mileageStats(lease, list);
+      const margin = lease.limit * 0.03;
+      const cls = s.projected > lease.limit + margin ? 'bad' : s.projected > lease.limit - margin ? 'warn' : 'good';
+      const head = cls === 'bad' ? 'Heading over' : cls === 'warn' ? 'Right on the limit' : 'On track: under';
+      const finalLine = cls === 'bad'
+        ? 'At your current rate you will finish about <b>' + nf(s.projected - lease.limit) + ' miles over</b> your ' + nf(lease.limit) + ' allowance.'
+        : 'At your current rate you will finish about <b>' + nf(lease.limit - s.projected) + ' miles under</b> your ' + nf(lease.limit) + ' allowance.';
+      const today = s.diff < 0 ? nf(-s.diff) + ' under' : nf(s.diff) + ' over';
+      box.innerHTML =
+        '<div class="mi-status ' + cls + '"><span class="pill">As of ' + fd(s.last.date) + '</span><strong>' + head + '</strong><p>' + finalLine + '</p></div>' +
+        '<div class="mi-grid">' +
+        '<div class="mi-tile"><span>Miles driven</span><b>' + nf(s.used) + '</b><small>of ' + nf(lease.limit) + ' (' + Math.round(s.used / lease.limit * 100) + '%)</small></div>' +
+        '<div class="mi-tile"><span>Allowance to date</span><b>' + nf(s.allowedToDate) + '</b><small>after ' + nf(s.elapsed) + ' of ' + nf(s.total) + ' days</small></div>' +
+        '<div class="mi-tile"><span>Against allowance</span><b class="' + (s.diff <= 0 ? 'good' : 'bad') + '">' + today + '</b><small>miles right now</small></div>' +
+        '<div class="mi-tile"><span>Estimated final</span><b class="' + (cls === 'bad' ? 'bad' : 'good') + '">' + nf(s.projected) + '</b><small>at current trend · ' + nf(s.projectedAvg) + ' at overall average</small></div>' +
+        '<div class="mi-tile"><span>Current trend</span><b>' + nf(s.trendRate * 30.44) + '</b><small>miles a month (since ' + fd(s.trendFrom) + ')</small></div>' +
+        '<div class="mi-tile"><span>You can now drive</span><b>' + nf(s.budgetPerDay * 30.44) + '</b><small>miles a month to finish on ' + nf(lease.limit) + ' · allowance is ' + nf(s.allowPerDay * 30.44) + '</small></div>' +
+        '</div>' + mileageChart(lease, s) +
+        '<p class="mi-note">Lease: ' + fd(lease.start) + ' to ' + fd(lease.end) + ', ' + nf(lease.limit) + ' miles. Miles are counted from ' + nf(lease.startMiles) + ' on the odometer at the start. ' + nf(s.remaining) + ' miles left over ' + nf(s.daysLeft) + ' days.</p>';
+    }
+    const rows = list.slice().reverse().map((r, i, arr) => {
+      const prev = arr[i + 1];
+      const gain = prev ? '+' + nf(r.miles - prev.miles) + ' in ' + nf(dnum(r.date) - dnum(prev.date)) + ' days' : '';
+      return '<div class="mi-row"><span>' + fd(r.date) + ' · <b>' + nf(r.miles) + '</b> miles<br><span class="gain">' + gain + '</span></span><span></span>' +
+        '<button type="button" class="ib danger" data-mdel="' + esc(r.id) + '">Delete</button></div>';
+    }).join('');
+    $('mi-list').innerHTML = rows || '<p class="note">No readings yet.</p>';
+  }
+
+  let mileageData = null;
+  async function loadMileage() {
+    try {
+      const r = await api('/api/mileage');
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Could not load your mileage.');
+      mileageData = d; renderMileage(d);
+    } catch (e) { $('mi-dash').innerHTML = '<p class="err">' + esc(e.message) + '</p>'; }
+  }
+  $('mi-date').value = todayStr();
+  $('mi-date').max = todayStr();
+  $('mi-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = $('mi-err'), btn = $('mi-save');
+    const date = $('mi-date').value, miles = $('mi-miles').value;
+    err.hidden = true;
+    if (!date || miles === '') { err.textContent = 'Add the date and the odometer reading.'; err.hidden = false; return; }
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+      const r = await api('/api/mileage', { method: 'POST', body: JSON.stringify({ date, miles: Number(miles) }) });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Could not save that reading.');
+      mileageData = d; renderMileage(d); $('mi-miles').value = '';
+      $('mi-dash').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (ex) { err.textContent = ex.message; err.hidden = false; }
+    finally { btn.disabled = false; btn.textContent = 'Add reading'; }
+  });
+  $('mi-list').addEventListener('click', async e => {
+    const b = e.target.closest('[data-mdel]'); if (!b) return;
+    if (b.dataset.confirm !== '1') { b.dataset.confirm = '1'; b.textContent = 'Tap again'; return; }
+    const r = await api('/api/mileage', { method: 'DELETE', body: JSON.stringify({ id: b.dataset.mdel }) });
+    if (r.ok) { mileageData = await r.json(); renderMileage(mileageData); }
+  });
+  window.__mileageStats = mileageStats;
 
   // ---------- Feedback ----------
   function renderFeedback(items) {

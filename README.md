@@ -15,3 +15,6 @@ Your survival kit for the Tesla Wait Club: https://frizzyteslalinks.vercel.app
 - All Redis keys start with `ftl:`. Environment variables: `KV_REST_API_URL` and `KV_REST_API_TOKEN` (from the Upstash integration), and `ADMIN_PIN`.
 
 No build step. Push to `main` and Vercel deploys.
+
+## Private mileage tracker
+The **Mileage** tab in `/admin` tracks lease mileage (26 May 2026 to 26 May 2030, 60,000 miles). Readings live in Redis (`ftl:mileage`) and every request needs the admin PIN. Lease details are set in `api/mileage.js`.
