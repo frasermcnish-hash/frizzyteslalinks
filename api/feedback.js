@@ -44,7 +44,13 @@ module.exports = async (req, res) => {
       return res.status(201).json({ ok: true });
     }
     const auth = await checkPin(req);
-    if (!auth.ok) return res.status(auth.status).json({ error: auth.error });
+    if (!auth.ok) return res.status(auth.status).json({ error: auth.error, ip: auth.ip, at: auth.at });
+    if (req.method === 'GET' && String(req.url || '').includes('pinlog=1')) {
+      const cutoff = Date.now() - 30 * 86400000;
+      const [log] = await redis([['LRANGE', 'ftl:pinlog', 0, 99]]);
+      const attempts = (log.result || []).map(r => { try { return JSON.parse(r); } catch (e) { return null; } }).filter(x => x && x.at > cutoff);
+      return res.status(200).json({ attempts });
+    }
     if (req.method === 'GET') {
       const [out] = await redis([['LRANGE', 'ftl:feedback', 0, 499]]);
       const items = (out.result || []).map(raw => { try { return Object.assign({ raw }, JSON.parse(raw)); } catch (e) { return null; } }).filter(Boolean);

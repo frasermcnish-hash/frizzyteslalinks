@@ -60,8 +60,11 @@ async function checkPin(req) {
   const a = crypto.createHash('sha256').update(given).digest();
   const b = crypto.createHash('sha256').update(expected).digest();
   if (given && crypto.timingSafeEqual(a, b)) return { ok: true };
-  await redis([['INCR', key], ['EXPIRE', key, 3600]]);
-  return { ok: false, status: 401, error: 'That PIN is not right.' };
+  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || String(req.headers['x-real-ip'] || '') || 'unknown';
+  const at = Date.now();
+  const entry = JSON.stringify({ ip, at, city: decodeURIComponent(String(req.headers['x-vercel-ip-city'] || '')), country: String(req.headers['x-vercel-ip-country'] || ''), ua: String(req.headers['user-agent'] || '').slice(0, 160) });
+  await redis([['INCR', key], ['EXPIRE', key, 3600], ['LPUSH', 'ftl:pinlog', entry], ['LTRIM', 'ftl:pinlog', 0, 99]]);
+  return { ok: false, status: 401, error: 'That PIN is not right.', ip, at };
 }
 
 function readBody(req) {

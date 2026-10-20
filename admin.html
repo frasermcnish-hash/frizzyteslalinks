@@ -94,6 +94,13 @@ body{margin:0}[hidden]{display:none!important}
 .mi-row:first-child { border-top: 0; }
 .mi-row .gain { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
 .mi-note { font-size: 12.5px; color: var(--muted); margin: 8px 0 0; }
+.err.denied { display: grid; gap: 6px; padding: 14px; border: 1px solid var(--accent); border-radius: 10px; background: var(--accent-soft); color: var(--ink); font-weight: 400; font-size: 14px; }
+.err.denied strong { color: var(--accent); font-size: 16px; }
+.pinlog-row { display: flex; justify-content: space-between; gap: 12px; font-family: var(--font-mono); font-size: 12.5px; padding-top: 6px; border-top: 1px solid var(--line); }
+.pinlog-row span { color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-size: 11px; }
+.pinlog { margin: 4px 0 8px; }
+.pinlog summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--accent); }
+.pinlog .mi-row { grid-template-columns: 1fr; }
 </style>
 </head>
 <body>
@@ -113,6 +120,7 @@ body{margin:0}[hidden]{display:none!important}
 
   <div id="app" hidden>
     <p class="note">Signed in. <button type="button" class="ib" id="signout">Sign out on this device</button></p>
+    <details class="pinlog" id="pinlog" hidden><summary id="pinlog-sum">Failed sign-in attempts</summary><div id="pinlog-list"></div></details>
     <div class="tabs" role="tablist">
       <button type="button" role="tab" aria-selected="true" data-tab="links">Links</button>
       <button type="button" role="tab" aria-selected="false" data-tab="ticker">Ticker <span class="badge" id="tkcount" hidden></span></button>
@@ -175,11 +183,14 @@ body{margin:0}[hidden]{display:none!important}
     const r = await api('/api/feedback');
     if (!r.ok) {
       const d = await r.json().catch(() => ({}));
-      throw new Error(d.error || 'Could not unlock.');
+      const e = new Error(d.error || 'Could not unlock.');
+      if (r.status === 401) { e.denied = true; e.ip = d.ip; e.at = d.at; }
+      throw e;
     }
     try { sessionStorage.setItem('ftl-pin', PIN); localStorage.setItem('ftl-admin', '1'); } catch (e) {}
     $('pinform').hidden = true; $('app').hidden = false; $('savebar').hidden = false;
     renderFeedback((await r.json()).items);
+    loadPinLog();
     loadTicker();
     const lr = await fetch('/api/links', { cache: 'no-store' });
     data = await lr.json();
@@ -190,7 +201,17 @@ body{margin:0}[hidden]{display:none!important}
     e.preventDefault();
     PIN = $('pin').value.trim();
     $('pinerr').hidden = true;
-    try { await unlock(); } catch (ex) { $('pinerr').textContent = ex.message; $('pinerr').hidden = false; }
+    try { await unlock(); } catch (ex) {
+      const box = $('pinerr');
+      if (ex.denied) {
+        const when = new Date(ex.at || Date.now()).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        box.innerHTML = '<strong>Whoops, this is a private area.</strong><span>Your failed attempt has been logged.</span>' +
+          '<span class="pinlog-row"><span>IP address</span><b>' + esc(ex.ip || 'unknown') + '</b></span>' +
+          '<span class="pinlog-row"><span>Attempt time</span><b>' + esc(when) + '</b></span>';
+        box.className = 'err denied';
+      } else { box.textContent = ex.message; box.className = 'err'; }
+      box.hidden = false; $('pin').value = '';
+    }
   });
   if (PIN) unlock().catch(() => { PIN = ''; try { sessionStorage.removeItem('ftl-pin'); } catch (e) {} });
 
@@ -198,6 +219,19 @@ body{margin:0}[hidden]{display:none!important}
     try { sessionStorage.removeItem('ftl-pin'); localStorage.removeItem('ftl-admin'); } catch (e) {}
     location.href = '/';
   });
+
+  async function loadPinLog() {
+    try {
+      const r = await api('/api/feedback?pinlog=1'); if (!r.ok) return;
+      const list = (await r.json()).attempts || [];
+      if (!list.length) return;
+      $('pinlog-sum').textContent = list.length + ' failed sign-in attempt' + (list.length === 1 ? '' : 's') + ' in the last 30 days';
+      $('pinlog-list').innerHTML = list.map(x => '<div class="mi-row"><span><b>' + esc(x.ip) + '</b>' +
+        ((x.city || x.country) ? ' · ' + esc([x.city, x.country].filter(Boolean).join(', ')) : '') +
+        '<br><span class="gain">' + esc(new Date(x.at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })) + '</span></span></div>').join('');
+      $('pinlog').hidden = false;
+    } catch (e) {}
+  }
 
   // ---------- Tabs ----------
   document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => {
