@@ -44,7 +44,7 @@ module.exports = async (req, res) => {
       return res.status(201).json({ ok: true });
     }
     const auth = await checkPin(req);
-    if (!auth.ok) return res.status(auth.status).json({ error: auth.error, ip: auth.ip, at: auth.at });
+    if (!auth.ok) return res.status(auth.status).json({ error: auth.error, ip: auth.ip, at: auth.at, tried: auth.tried });
     if (req.method === 'GET' && String(req.url || '').includes('pinlog=1')) {
       const cutoff = Date.now() - 30 * 86400000;
       const [log] = await redis([['LRANGE', 'ftl:pinlog', 0, 99]]);
