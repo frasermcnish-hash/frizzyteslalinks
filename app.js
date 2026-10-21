@@ -357,6 +357,20 @@
       $('st-v-today').textContent = n(d.visitors && d.visitors.today);
       $('st-v-total').textContent = n(d.visitors && d.visitors.total);
       $('st-v-week').textContent = n(d.visitors && d.visitors.week);
+      const trend = (id, pct, vs) => {
+        const el = $(id); if (!el) return;
+        if (pct == null) { el.textContent = ''; return; }
+        const dir = pct >= 10 ? 'up' : pct <= -10 ? 'down' : 'flat';
+        const arrow = dir === 'up' ? '▲' : dir === 'down' ? '▼' : '▶';
+        const word = dir === 'up' ? 'busier' : dir === 'down' ? 'slower' : 'steady';
+        el.className = 'trend ' + dir;
+        el.textContent = arrow + ' ' + (pct > 0 ? '+' : '') + pct + '%';
+        el.title = word + ' than ' + vs;
+        el.setAttribute('aria-label', word + ', ' + (pct > 0 ? 'up ' : pct < 0 ? 'down ' : '') + Math.abs(pct) + '% on ' + vs);
+      };
+      const t = (d.visitors && d.visitors.trend) || {};
+      trend('st-v-today-t', t.today, 'yesterday at this time');
+      trend('st-v-week-t', t.week, 'the 7 days before');
       $('st-c-total').textContent = n(d.clicks && d.clicks.total);
       $('st-c-week').textContent = n(d.clicks && d.clicks.week);
     }).catch(() => { $('stats').hidden = true; });
