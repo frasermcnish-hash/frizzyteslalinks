@@ -93,6 +93,15 @@
      "desc": "Search any vessel by name",
      "url": "https://www.vesselfinder.com/",
      "host": "vesselfinder"
+    },
+    {
+     "id": "yatst-distl-it",
+     "code": "YATST",
+     "title": "YATST ship tracker",
+     "desc": "Yet Another Tesla Ship Tracker: find your ship by name or VIN",
+     "url": "https://yatst.distl.it/",
+     "host": "distl.it",
+     "added": "2026-10-25"
     }
    ]
   },

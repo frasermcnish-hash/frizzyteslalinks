@@ -40,4 +40,17 @@ function addResources(data) {
   return data;
 }
 
-module.exports = [{ id: '2026-10-12-resources', apply: addResources }];
+const YATST = { id: 'yatst-distl-it', code: 'YATST', title: 'YATST ship tracker', desc: 'Yet Another Tesla Ship Tracker: find your ship by name or VIN', url: 'https://yatst.distl.it/', host: 'distl.it', added: '2026-10-25' };
+function addYatst(data) {
+  const has = data.sections.some(s => s.links.some(l => l.url.replace(/\/$/, '') === 'https://yatst.distl.it'));
+  if (!has) {
+    const ships = data.sections.find(s => s.id === 'ships') || data.sections[0];
+    ships.links.push(Object.assign({}, YATST));
+  }
+  return data;
+}
+
+module.exports = [
+  { id: '2026-10-12-resources', apply: addResources },
+  { id: '2026-10-25-yatst', apply: addYatst },
+];

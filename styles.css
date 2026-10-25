@@ -380,3 +380,9 @@ html.drawer-open, html.drawer-open body { overflow: hidden; }
 .trend { display: inline-block; margin-left: 4px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .trend.up { color: var(--up); } .trend.down { color: var(--down); } .trend.flat { color: var(--muted); }
 .trend:empty { display: none; }
+
+/* "Just added" box */
+.newlinks { margin-top: 14px; padding: 12px; border: 2px solid var(--accent); border-radius: 12px; background: var(--accent-soft); }
+.newlinks h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-family: var(--font-display); font-size: 1.3rem; text-transform: uppercase; letter-spacing: .03em; color: var(--harbour); }
+.new-badge { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; color: #fff; background: var(--accent); border-radius: 999px; padding: 3px 8px; }
+.new-meta { font-family: var(--font-mono); font-size: 11px; color: var(--accent) !important; }

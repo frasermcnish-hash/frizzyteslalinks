@@ -56,6 +56,7 @@ function clean(input) {
       const tag = str(l.tag, 24);
       if (tag) out.tag = tag;
       if (l.highlight) out.highlight = true;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(String(l.added || ''))) out.added = l.added;
       return out;
     });
     return { id, title, blurb: str(s.blurb, 200), layout, links };
@@ -77,6 +78,11 @@ module.exports = async (req, res) => {
       if (!auth.ok) return res.status(auth.status).json({ error: auth.error });
       let data;
       try { data = clean(await readBody(req)); } catch (e) { return res.status(400).json({ error: e.message }); }
+      // Links that weren't on the page before get today's date, so they show under "New links".
+      const before = await getLinks();
+      const known = new Set((before.sections || []).flatMap(x => x.links.map(l => l.url.replace(/\/$/, ''))));
+      const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London' }).format(new Date());
+      data.sections.forEach(x => x.links.forEach(l => { if (!l.added && !known.has(l.url.replace(/\/$/, ''))) l.added = today; }));
       await redis([['SET', 'ftl:links', JSON.stringify(data)]]);
       res.setHeader('Cache-Control', 'no-store');
       return res.status(200).json(data);

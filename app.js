@@ -47,6 +47,27 @@
     return (tpl && tpl.dataset.fold) || 'Show ' + s.links.length + ' links';
   }
 
+  // Links added in the last 30 days, newest first, shown in the "Just added" box.
+  function renderNewLinks(data) {
+    const box = $('newlinks'), ul = $('newlinks-list');
+    if (!box || !ul) return;
+    const cutoff = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+    const fresh = [];
+    data.sections.forEach(s => s.links.forEach(l => { if (l.added && l.added >= cutoff) fresh.push(Object.assign({ section: s.title }, l)); }));
+    fresh.sort((a, b) => b.added.localeCompare(a.added));
+    if (!fresh.length) { box.hidden = true; return; }
+    ul.innerHTML = fresh.slice(0, 6).map(l => {
+      const when = new Date(l.added + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+      const code = l.code || (l.title || '').replace(/[^A-Za-z0-9]/g, '').slice(0, 4).toUpperCase();
+      return '<li><a data-id="' + esc(l.id) + '" href="' + esc(l.url) + '" target="_blank" rel="noopener">' +
+        '<span class="code">' + esc(code) + '</span>' +
+        '<span class="txt"><strong>' + esc(l.title) + '</strong><span>' + esc(l.desc || '') + '</span>' +
+        '<span class="new-meta">Added ' + esc(when) + ' · in ' + esc(l.section) + '</span></span>' +
+        '<span class="host"><span class="hits"></span><span class="arrow">↗</span></span></a></li>';
+    }).join('');
+    box.hidden = false;
+  }
+
   function render(data) {
     if (!list || !data || !Array.isArray(data.sections)) return;
     linkIndex = {};
@@ -63,6 +84,7 @@
           : '<ul class="links">' + items + '</ul>') + '</div></section>';
     }).join('');
     list.innerHTML = html;
+    renderNewLinks(data);
     // Static extras (e.g. the Wait Club routine) slot into their section.
     list.querySelectorAll('.extra').forEach(div => {
       const tpl = $('extra-' + div.dataset.for);

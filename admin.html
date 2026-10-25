@@ -332,7 +332,7 @@ body{margin:0}[hidden]{display:none!important}
       case 'ldel':
         if (b.dataset.confirm !== '1') { b.dataset.confirm = '1'; b.textContent = 'Tap again to delete'; return; }
         s.links.splice(li, 1); break;
-      case 'ladd': { const l = { title: '', desc: '', url: '', _k: Math.random().toString(36).slice(2) }; if (s.layout === 'rows') { l.code = ''; l.host = ''; } s.links.push(l); openLinks.add(l._k); break; }
+      case 'ladd': { const l = { title: '', desc: '', url: '', added: new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London' }).format(new Date()), _k: Math.random().toString(36).slice(2) }; if (s.layout === 'rows') { l.code = ''; l.host = ''; } s.links.push(l); openLinks.add(l._k); break; }
       case 'sup': swap(data.sections, si, si - 1); break;
       case 'sdown': swap(data.sections, si, si + 1); break;
       case 'sdel':
