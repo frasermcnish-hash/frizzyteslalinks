@@ -14,15 +14,20 @@
   };
 
   // ---------- Rendering ----------
+  // A link counts as new for 30 days after it was added.
+  const NEW_CUTOFF = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+  const isNew = l => Boolean(l.added && l.added >= NEW_CUTOFF);
+  const NEW_STAR = '<span class="new-star" title="New" aria-label="New"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.1l-5.9 3.2 1.3-6.5L2.5 9.3l6.6-.8z"/></svg>New</span>';
+
   function rowHTML(l) {
     return '<li><a data-id="' + esc(l.id) + '" href="' + esc(l.url) + '" target="_blank" rel="noopener">' +
       '<span class="code">' + esc(l.code) + '</span>' +
-      '<span class="txt"><strong>' + esc(l.title) + '</strong>' + (l.desc ? '<span>' + esc(l.desc) + '</span>' : '') + '</span>' +
+      '<span class="txt"><strong>' + esc(l.title) + (isNew(l) ? ' ' + NEW_STAR : '') + '</strong>' + (l.desc ? '<span>' + esc(l.desc) + '</span>' : '') + '</span>' +
       '<span class="host"><span class="host-name">' + esc(l.host) + ' </span><span class="hits"></span><span class="arrow">↗</span></span></a></li>';
   }
   function cardHTML(l) {
     return '<li><a data-id="' + esc(l.id) + '" href="' + esc(l.url) + '" target="_blank" rel="noopener">' +
-      '<strong>' + esc(l.title) + '</strong>' + (l.desc ? '<span>' + esc(l.desc) + '</span>' : '') +
+      '<strong>' + esc(l.title) + (isNew(l) ? ' ' + NEW_STAR : '') + '</strong>' + (l.desc ? '<span>' + esc(l.desc) + '</span>' : '') +
       (l.tag ? '<em class="tag' + (l.highlight ? ' ev' : '') + '">' + esc(l.tag) + '</em>' : '') +
       '<span class="hits"></span></a></li>';
   }
@@ -75,7 +80,7 @@
       s.links.forEach(l => { linkIndex[l.id] = l; });
       const items = s.links.map(s.layout === 'cards' ? cardHTML : rowHTML).join('');
       return '<section id="' + esc(s.id) + '">' +
-        '<h2>' + esc(s.title) + ' <span class="count"></span></h2>' +
+        '<h2>' + esc(s.title) + (s.links.some(isNew) ? ' ' + NEW_STAR : '') + ' <span class="count"></span></h2>' +
         '<div class="fsec-body">' +
         (s.blurb ? '<p>' + esc(s.blurb) + '</p>' : '') +
         '<div class="extra" data-for="' + esc(s.id) + '"></div>' +

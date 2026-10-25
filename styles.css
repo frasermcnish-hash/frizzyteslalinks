@@ -11,6 +11,8 @@
   --chip: #e2e9ef;
   --beam: #e8a400;
   --octo: #f050f8;
+  --gold: #b8860b;
+  --gold-soft: #fff4cc;
   --up: #1d7a47;
   --down: #c8102e;
   --octo-ink: #100030;
@@ -21,13 +23,13 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0b141d; --surface: #13202c; --ink: #e7eef4; --muted: #93a4b4;
-    --line: #22344a; --accent: #ff4d5e; --accent-soft: #3a1820; --harbour: #8fb7da; --chip: #1c2d3d; --beam: #ffd34d; --up: #5fd08f; --down: #ff5d6c;
+    --line: #22344a; --accent: #ff4d5e; --accent-soft: #3a1820; --harbour: #8fb7da; --chip: #1c2d3d; --beam: #ffd34d; --up: #5fd08f; --down: #ff5d6c; --gold: #ffcf4a; --gold-soft: #3a2f0e;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0b141d; --surface: #13202c; --ink: #e7eef4; --muted: #93a4b4;
-  --line: #22344a; --accent: #ff4d5e; --accent-soft: #3a1820; --harbour: #8fb7da; --chip: #1c2d3d; --beam: #ffd34d; --up: #5fd08f; --down: #ff5d6c;
+  --line: #22344a; --accent: #ff4d5e; --accent-soft: #3a1820; --harbour: #8fb7da; --chip: #1c2d3d; --beam: #ffd34d; --up: #5fd08f; --down: #ff5d6c; --gold: #ffcf4a; --gold-soft: #3a2f0e;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -386,3 +388,8 @@ html.drawer-open, html.drawer-open body { overflow: hidden; }
 .newlinks h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-family: var(--font-display); font-size: 1.3rem; text-transform: uppercase; letter-spacing: .03em; color: var(--harbour); }
 .new-badge { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; color: #fff; background: var(--accent); border-radius: 999px; padding: 3px 8px; }
 .new-meta { font-family: var(--font-mono); font-size: 11px; color: var(--accent) !important; }
+
+/* Gold "New" star on new links and their sections */
+.new-star { display: inline-flex; align-items: center; gap: 3px; vertical-align: 2px; padding: 1px 7px 1px 4px; border-radius: 999px; border: 1px solid var(--gold); background: var(--gold-soft); color: var(--gold); font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; line-height: 1.5; white-space: nowrap; }
+.new-star svg { width: 12px; height: 12px; fill: var(--gold); flex: none; }
+.fsec-title .new-star { vertical-align: 4px; margin-left: 4px; }
