@@ -100,7 +100,8 @@ body{margin:0}[hidden]{display:none!important}
 .pinlog-row span { color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-size: 11px; }
 .pinlog { margin: 4px 0 8px; }
 .pinlog summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--accent); }
-.pinlog .mi-row { grid-template-columns: 1fr; }
+.pinlog .mi-row { grid-template-columns: 1fr auto; }
+#pinlog-clear { margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -184,7 +185,7 @@ body{margin:0}[hidden]{display:none!important}
     if (!r.ok) {
       const d = await r.json().catch(() => ({}));
       const e = new Error(d.error || 'Could not unlock.');
-      if (r.status === 401) { e.denied = true; e.ip = d.ip; e.at = d.at; e.tried = d.tried; }
+      if (r.status === 401) { e.denied = true; e.ip = d.ip; e.at = d.at; }
       throw e;
     }
     try { sessionStorage.setItem('ftl-pin', PIN); localStorage.setItem('ftl-admin', '1'); } catch (e) {}
@@ -206,7 +207,6 @@ body{margin:0}[hidden]{display:none!important}
       if (ex.denied) {
         const when = new Date(ex.at || Date.now()).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
         box.innerHTML = '<strong>Whoops, this is a private area.</strong><span>Your failed attempt has been logged.</span>' +
-          '<span class="pinlog-row"><span>PIN entered</span><b>' + esc(ex.tried || '(blank)') + '</b></span>' +
           '<span class="pinlog-row"><span>IP address</span><b>' + esc(ex.ip || 'unknown') + '</b></span>' +
           '<span class="pinlog-row"><span>Attempt time</span><b>' + esc(when) + '</b></span>';
         box.className = 'err denied';
@@ -221,18 +221,36 @@ body{margin:0}[hidden]{display:none!important}
     location.href = '/';
   });
 
+  let pinlog = [];
+  function renderPinLog() {
+    if (!pinlog.length) { $('pinlog').hidden = true; return; }
+    $('pinlog-sum').textContent = pinlog.length + ' failed sign-in attempt' + (pinlog.length === 1 ? '' : 's') + ' in the last 30 days';
+    $('pinlog-list').innerHTML = pinlog.map((x, i) => '<div class="mi-row"><span><b>' + esc(x.ip) + '</b>' +
+      ((x.city || x.country) ? ' · ' + esc([x.city, x.country].filter(Boolean).join(', ')) : '') +
+      '<br><span class="gain">' + esc(new Date(x.at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })) + '</span></span>' +
+      '<button type="button" class="ib danger" data-pldel="' + i + '">Delete</button></div>').join('') +
+      '<button type="button" class="ib danger" id="pinlog-clear">Delete all</button>';
+    $('pinlog').hidden = false;
+  }
   async function loadPinLog() {
     try {
       const r = await api('/api/feedback?pinlog=1'); if (!r.ok) return;
-      const list = (await r.json()).attempts || [];
-      if (!list.length) return;
-      $('pinlog-sum').textContent = list.length + ' failed sign-in attempt' + (list.length === 1 ? '' : 's') + ' in the last 30 days';
-      $('pinlog-list').innerHTML = list.map(x => '<div class="mi-row"><span><b>' + esc(x.ip) + '</b>' +
-        ((x.city || x.country) ? ' · ' + esc([x.city, x.country].filter(Boolean).join(', ')) : '') +
-        '<br><span class="gain">Tried: ' + esc(x.tried == null ? 'not recorded' : (x.tried || '(blank)')) + ' · ' + esc(new Date(x.at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })) + '</span></span></div>').join('');
-      $('pinlog').hidden = false;
+      pinlog = (await r.json()).attempts || [];
+      renderPinLog();
     } catch (e) {}
   }
+  $('pinlog-list').addEventListener('click', async e => {
+    const one = e.target.closest('[data-pldel]');
+    const all = e.target.closest('#pinlog-clear');
+    if (!one && !all) return;
+    if (all && !confirm('Delete all failed sign-in attempts?')) return;
+    const body = all ? { all: true } : { id: pinlog[+one.dataset.pldel].id };
+    (one || all).disabled = true;
+    const r = await api('/api/feedback?pinlog=1', { method: 'DELETE', body: JSON.stringify(body) });
+    if (r.ok) { if (all) pinlog = []; else pinlog.splice(+one.dataset.pldel, 1); }
+    else (one || all).disabled = false;
+    renderPinLog();
+  });
 
   // ---------- Tabs ----------
   document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => {

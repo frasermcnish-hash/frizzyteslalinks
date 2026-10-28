@@ -2,8 +2,11 @@
 // POST   /api/feedback {type,name,link,msg}   -> saves one (max 5 per visitor per hour)
 // GET    /api/feedback (x-admin-pin)          -> { items: [{raw, ts, type, name, link, msg}] }
 // DELETE /api/feedback (x-admin-pin) {raw}    -> removes one
+// GET    /api/feedback?pinlog=1 (x-admin-pin) -> failed sign-ins (no PINs)
+// DELETE /api/feedback?pinlog=1 {id} | {all:true} -> removes one / clears all
 const { redis, configured, checkPin, clientKey, readBody } = require('./_lib');
 
+const logId = raw => require('crypto').createHash('sha256').update(raw).digest('hex').slice(0, 16);
 const str = (v, max) => String(v == null ? '' : v).replace(/[\u0000-\u0008\u000b-\u001f]/g, ' ').trim().slice(0, max);
 
 // Adds (or updates) one task on the McNisdash home dashboard's to-do list, which lives in the
@@ -44,12 +47,27 @@ module.exports = async (req, res) => {
       return res.status(201).json({ ok: true });
     }
     const auth = await checkPin(req);
-    if (!auth.ok) return res.status(auth.status).json({ error: auth.error, ip: auth.ip, at: auth.at, tried: auth.tried });
-    if (req.method === 'GET' && String(req.url || '').includes('pinlog=1')) {
+    if (!auth.ok) return res.status(auth.status).json({ error: auth.error, ip: auth.ip, at: auth.at });
+    const isPinLog = String(req.url || '').includes('pinlog=1');
+    if (req.method === 'GET' && isPinLog) {
       const cutoff = Date.now() - 30 * 86400000;
       const [log] = await redis([['LRANGE', 'ftl:pinlog', 0, 99]]);
-      const attempts = (log.result || []).map(r => { try { return JSON.parse(r); } catch (e) { return null; } }).filter(x => x && x.at > cutoff);
+      const attempts = (log.result || []).map(raw => {
+        try {
+          const x = JSON.parse(raw);
+          return { id: logId(raw), ip: x.ip, at: x.at, city: x.city, country: x.country };
+        } catch (e) { return null; }
+      }).filter(x => x && x.at > cutoff);
       return res.status(200).json({ attempts });
+    }
+    if (req.method === 'DELETE' && isPinLog) {
+      const { id, all } = await readBody(req);
+      if (all === true) { await redis([['DEL', 'ftl:pinlog']]); return res.status(204).end(); }
+      if (typeof id !== 'string') return res.status(400).json({ error: 'Nothing to delete.' });
+      const [log] = await redis([['LRANGE', 'ftl:pinlog', 0, 99]]);
+      const raw = (log.result || []).find(r => logId(r) === id);
+      if (raw) await redis([['LREM', 'ftl:pinlog', 1, raw]]);
+      return res.status(204).end();
     }
     if (req.method === 'GET') {
       const [out] = await redis([['LRANGE', 'ftl:feedback', 0, 499]]);
