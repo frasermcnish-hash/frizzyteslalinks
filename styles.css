@@ -341,21 +341,6 @@ header > .eyebrow, header > h1 { padding-right: 58px; }
   .news-run[aria-hidden="true"] { display: none; }
 }
 
-/* Do you like the new site? */
-.vote { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-top: 14px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
-.vote-q { font-weight: 600; font-size: 14px; }
-.vote-btns { display: flex; gap: 8px; margin-left: auto; }
-.vote-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; font-size: 16px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 999px; }
-.vote-btn:hover { border-color: var(--harbour); }
-.vote-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.vote-n { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
-.vote-btn.pop { animation: vote-pop .3s ease; }
-@keyframes vote-pop { 50% { transform: scale(1.15); } }
-.vote-thanks { flex-basis: 100%; font-size: 12.5px; color: var(--muted); }
-.vote-thanks:empty { display: none; }
-@media (prefers-reduced-motion: reduce) { .vote-btn.pop { animation: none; } }
-.vote-thanks a { color: var(--accent); font-weight: 600; }
-
 /* Visitor trend arrows */
 .trend { display: inline-block; margin-left: 4px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .trend.up { color: var(--up); } .trend.down { color: var(--down); } .trend.flat { color: var(--muted); }

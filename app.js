@@ -403,25 +403,5 @@
     }).catch(() => { $('stats').hidden = true; });
   }
 
-  // ---------- Do you like the new site? ----------
-  const vote = $('vote');
-  if (vote) {
-    const show = d => { if (d && typeof d.up === 'number') { $('vote-up').textContent = fmt(d.up); $('vote-down').textContent = fmt(d.down); } };
-    fetch('/api/vote').then(r => r.json()).then(show).catch(() => {});
-    vote.addEventListener('click', async e => {
-      const b = e.target.closest('.vote-btn'); if (!b) return;
-      const el = $(b.dataset.v === 'up' ? 'vote-up' : 'vote-down');
-      el.textContent = fmt((parseInt(el.textContent.replace(/[^0-9]/g, ''), 10) || 0) + 1);
-      b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
-      if (b.dataset.v === 'up') $('vote-thanks').textContent = 'Thanks!';
-      else $('vote-thanks').innerHTML = 'Thanks, noted. <a href="#feedback">Tell us what to improve</a>.';
-      try {
-        const r = await fetch('/api/vote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ v: b.dataset.v }) });
-        const d = await r.json(); show(d);
-        if (r.status === 429) $('vote-thanks').textContent = d.error;
-      } catch (ex) {}
-    });
-  }
-
   loadLinks();
 })();
