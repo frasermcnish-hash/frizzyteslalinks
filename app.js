@@ -423,40 +423,5 @@
     });
   }
 
-  // ---------- Pull-out ship positions (Tesla Ships) ----------
-  const shipsTab = $('ships-tab'), drawer = $('ships-drawer'), scrim = $('ships-scrim');
-  if (shipsTab && drawer) {
-    let loaded = false;
-    const body = $('ships-body');
-    const fallback = () => {
-      body.innerHTML = '<div class="ships-fallback"><p>Tesla Ships can\'t be shown inside this page, but it opens in a new tab.</p>' +
-        '<a class="btn" data-id="tesla-propl-eu" href="https://tesla.propl.eu/" target="_blank" rel="noopener">Open the live ship map ↗</a></div>';
-    };
-    const load = async () => {
-      if (loaded) return; loaded = true;
-      try {
-        const d = await (await fetch('/api/embedcheck')).json();
-        if (!d.embeddable) return fallback();
-        const f = document.createElement('iframe');
-        f.src = 'https://tesla.propl.eu/'; f.title = 'Tesla Ships live map'; f.loading = 'lazy';
-        f.referrerPolicy = 'strict-origin-when-cross-origin';
-        f.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox');
-        body.innerHTML = ''; body.appendChild(f);
-      } catch (e) { fallback(); }
-    };
-    const setOpen = open => {
-      drawer.classList.toggle('open', open);
-      drawer.setAttribute('aria-hidden', String(!open));
-      shipsTab.setAttribute('aria-expanded', String(open));
-      scrim.hidden = !open;
-      document.documentElement.classList.toggle('drawer-open', open);
-      if (open) { load(); $('ships-close').focus(); } else shipsTab.focus();
-    };
-    shipsTab.addEventListener('click', () => setOpen(!drawer.classList.contains('open')));
-    $('ships-close').addEventListener('click', () => setOpen(false));
-    scrim.addEventListener('click', () => setOpen(false));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) setOpen(false); });
-  }
-
   loadLinks();
 })();
