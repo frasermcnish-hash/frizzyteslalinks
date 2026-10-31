@@ -14,8 +14,8 @@
   };
 
   // ---------- Rendering ----------
-  // A link counts as new for 30 days after it was added.
-  const NEW_CUTOFF = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+  // A link counts as new for 7 days after it was added.
+  const NEW_CUTOFF = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
   const isNew = l => Boolean(l.added && l.added >= NEW_CUTOFF);
   const NEW_STAR = '<span class="new-star" title="New" aria-label="New"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.1l-5.9 3.2 1.3-6.5L2.5 9.3l6.6-.8z"/></svg>New</span>';
 
@@ -52,11 +52,11 @@
     return (tpl && tpl.dataset.fold) || 'Show ' + s.links.length + ' links';
   }
 
-  // Links added in the last 30 days, newest first, shown in the "Just added" box.
+  // Links added in the last 7 days, newest first, shown in the "Just added" box.
   function renderNewLinks(data) {
     const box = $('newlinks'), ul = $('newlinks-list');
     if (!box || !ul) return;
-    const cutoff = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+    const cutoff = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
     const fresh = [];
     data.sections.forEach(s => s.links.forEach(l => { if (l.added && l.added >= cutoff) fresh.push(Object.assign({ section: s.title }, l)); }));
     fresh.sort((a, b) => b.added.localeCompare(a.added));
